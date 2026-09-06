@@ -1,16 +1,23 @@
-use std::{
-  collections::{self, VecDeque},
-  ops,
-};
+use std::{collections::VecDeque, ops};
 
-use icu_segmenter::{LineSegmenter, options::LineBreakOptions};
-use ropey::Rope;
+use icu_segmenter::{LineSegmenter, LineSegmenterBorrowed, options::LineBreakOptions};
 use unicode_segmentation::UnicodeSegmentation;
 use unicode_width::UnicodeWidthStr;
 
 use crate::ui::editor::new::viewport::Viewport;
 
-pub struct SoftWrap;
+pub struct SoftWrap {
+  pub line_segementer: LineSegmenterBorrowed<'static>,
+}
+
+impl SoftWrap {
+  pub fn new() -> Self {
+    Self {
+      line_segementer: LineSegmenter::new_auto(LineBreakOptions::default()),
+    }
+  }
+}
+
 pub struct WrappedLine {
   pub rope_line_idx: usize,
   pub string: VecDeque<String>,
@@ -26,36 +33,15 @@ pub struct SliceData {
 
 #[allow(dead_code)]
 impl SoftWrap {
-  /// Wraps the viewport lines.
-  /// Note: It returns [`VecDeque`,] which allows pop and push on both ends.
-  // pub fn wrap_viewport_lines(viewport: &mut Viewport, rope: &Rope) {
-  //   let range = viewport.topbot_line_idx.clone();
-  //   let mut wrapped_lines = VecDeque::new();
-  //   for line_idx in range {
-  //     let rope_string = rope.line(line_idx).to_string();
-  //     let wrapped_line = Self::wrap(&rope_string, viewport);
-  //     wrapped_lines.push_back(wrapped_line);
-  //   }
-  //
-  //   let mut range = VecDeque::new();
-  //   for wrapped_line in wrapped_lines {
-  //     let row_range = Self::get_row_ranges(wrapped_line);
-  //     range.push_back(row_range);
-  //   }
-  //   viewport.row_occupied_by_each_wrapped_line = Self::get_row_ranges(&wrapped_lines);
-  //
-  //   viewport.topbot_wrapped_lines = wrapped_lines;
-  // }
-
   /// Wraps the given `RopeSlice` string into
   /// slices that fit well under `Viewport width.`
   ///
   /// Note: Only the last value of the returned vector will contain a line break char/unicode.
   #[allow(dead_code)]
-  pub fn wrap(rope_line: &str, viewport: &Viewport) -> VecDeque<String> {
-    let breakpoints = &Self::get_breakpoints(rope_line);
+  pub fn wrap(&mut self, rope_line: &str, viewport: &Viewport) -> VecDeque<String> {
+    let breakpoints = self.get_breakpoints(rope_line);
     let mut wrap = VecDeque::new();
-    let breakpoint_slices = Self::get_breakpoint_slices(rope_line, breakpoints);
+    let breakpoint_slices = Self::get_breakpoint_slices(rope_line, &breakpoints);
 
     let mut current_line = String::new();
     let mut current_width = 0usize;
@@ -88,34 +74,44 @@ impl SoftWrap {
 }
 
 pub struct SliceRange {
+  pub line_idx: usize,
   pub row_range: ops::RangeInclusive<usize>,
 }
 
 // Getters defined here
 impl SoftWrap {
-  /// Returns ranges of wrapped lines, telling exactly how many rows of viewport have been occupied by a particular line.
-  /// Note: each element of `wrapped_lines` and the returned vector is equal to a rope line.
+  /// Returns the inclusive range of rows that have been occupied by the `wrapped line` given line.
   ///
-  /// Note: if say a range is `0..4` then it means that the line is a scrolloffset line and has 4
-  pub fn get_row_range(wrapped_slice: &VecDeque<String>, start_row: &mut usize) -> SliceRange {
+  /// Notes:
+  /// 1. The first parameter stands for a single line that have been stored in 1 or more than 1 slice.
+  ///
+  /// 2. The second parameter stands for rope line index of the given line.
+  ///
+  /// 3. The third parameter is a counter that must be set to zero.
+  pub fn get_row_range(
+    wrapped_line: &VecDeque<String>,
+    line_idx: usize,
+    start_row: &mut usize,
+  ) -> SliceRange {
     // assign end row counter
-    let end_counter = *start_row + wrapped_slice.len().saturating_sub(1);
+    let end_counter = *start_row + wrapped_line.len().saturating_sub(1);
 
     // Cache the row range
     let row_range = *start_row..=end_counter;
 
     // Mutate the start row counter
-    *start_row += wrapped_slice.len();
+    *start_row += wrapped_line.len();
 
-    SliceRange { row_range }
+    SliceRange {
+      line_idx,
+      row_range,
+    }
   }
 
   /// Returns the vector containing breakpoints of given string.
   /// Note: the breakpoints are `unicode-aware`, `grapheme-aware` and more specifically `scripto continua-aware`
-  fn get_breakpoints(rope_line: &str) -> Vec<usize> {
-    LineSegmenter::new_auto(LineBreakOptions::default())
-      .segment_str(rope_line)
-      .collect()
+  fn get_breakpoints(&mut self, rope_line: &str) -> Vec<usize> {
+    self.line_segementer.segment_str(rope_line).collect()
   }
 
   /// Get the slices at valid break points of strings.
