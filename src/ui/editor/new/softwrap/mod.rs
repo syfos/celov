@@ -6,6 +6,8 @@ use unicode_width::UnicodeWidthStr;
 
 use crate::ui::editor::new::viewport::Viewport;
 
+pub mod rope_to_wrap;
+
 pub struct SoftWrap {
   pub line_segementer: LineSegmenterBorrowed<'static>,
 }
