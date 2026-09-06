@@ -12,7 +12,7 @@ pub mod viewport;
 #[allow(dead_code)]
 pub struct WrappedRope {
   // The wrapped string.
-  pub string: String,
+  pub data: VecDeque<String>,
   /// The rope line idx.
   pub line_idx: usize,
   /// Row range occupied by wrapped line
@@ -38,28 +38,47 @@ pub enum LineBreakChar {
   None,
 }
 
+// Get rope string -> wrap it -> increment row counter to next empty row -> cslculate another line.
+
 #[allow(dead_code)]
 impl Editor {
-  /// Returns `Vec<String>` that will be displayed in the viewport of editor.
-  /// Note that each [`String`] of the vector is by default has only 1 valid line break.
-  pub fn get_viewport_lines(&mut self, viewport_height: &usize) -> Vec<ViewportLine> {
-    // The line_idx number of very first line to be rendered in viewport.
-    let mut scroll_offset = self.scroll_offset;
+  /// Iterate on the given rope line indices and return wrapped lines for viewport.
+  pub fn rope_to_wrap(&mut self, softwrap: &mut SoftWrap, viewport: &Viewport) -> VecDeque<WrappedRope> {
+    // Rope line index counter
+    let mut line_idx = self.scroll_offset;
+    // Holds wrapped lines of viewport
+    let mut viewport_lines = VecDeque::new();
+    // Counter that helps to get non overlapping
+    // row ranges from Softwrap::get_row_range
+    // E.g of range: [1..=5, 6..=9, 10..=15]
+    //
+    // Note: internally you update this variable incrementally
+    // with the field "row_range" of pub struct "SliceRange".
+    let mut start_row = 0usize;
 
-    // A counter to track row along viewport_height
-    let mut row_tracker = 0usize;
+    let mut net_row_count = 0usize;
 
-    let mut viewport_lines = Vec::new();
+    while net_row_count >= viewport.height {
+      // Note: Each rope.line(idx) gives a string with only 1 valid linebreak at end.
+      let string = self.rope.line(line_idx).to_string();
 
-    while row_tracker < *viewport_height + 1 {
-      let string = self.rope.line(scroll_offset).to_string();
+      let data = softwrap.wrap(&string, viewport);
+      let slice_range = SoftWrap::get_row_range(&data, line_idx, &mut start_row);
       let line_break_char = Self::detect_trailing_linebreak_char(&string);
-      viewport_lines.push(ViewportLine {
-        string,
+
+      // For unique row ranges like [0..=5, 6..=9, 10..=15]
+      // it returns the the net count: 5 + 4 + 6 = 15
+      net_row_count += &slice_range.row_range.clone().count();
+
+      viewport_lines.push_back(WrappedRope {
+        line_idx,
+        data,
         line_break_char,
+        rows_occupied: slice_range.row_range,
       });
-      scroll_offset += 1;
-      row_tracker += 1;
+
+      // increment
+      line_idx += 1;
     }
 
     viewport_lines
