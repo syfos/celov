@@ -5,9 +5,6 @@ use crate::ui::editor::{
   new::{softwrap::SoftWrap, viewport::Viewport},
 };
 
-pub mod motions;
-pub mod softwrap;
-pub mod viewport;
 
 #[allow(dead_code)]
 pub struct WrappedRope {
