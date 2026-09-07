@@ -10,14 +10,6 @@ use crate::ui::unicode::{bidi_order::BidiAwareLine, grapheme_boundary::GraphemeB
 pub mod bidi_order;
 pub mod grapheme_boundary;
 pub mod query_normalization;
+pub mod unicode_struct;
 
-
-/// Gives Unicode support to Sycode.
-#[allow(dead_code)]
-pub struct Unicode {
-  /// Viewport lines into Grapheme aware lines
-  pub viewport_grapheme_lines: Vec<Vec<GraphemeBoundary>>,
-  /// Viewport lines into Bidirection aware lines
-  pub viewport_bidirectional_lines: Vec<BidiAwareLine>,
-}
 

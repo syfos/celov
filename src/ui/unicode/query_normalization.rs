@@ -1,4 +1,4 @@
-use crate::ui::unicode::Unicode;
+use crate::ui::unicode::unicode_struct::Unicode;
 use unicode_normalization::{is_nfc, is_nfd};
 
 pub enum CanonicalType {

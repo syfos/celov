@@ -1,7 +1,8 @@
 use std::ops;
-use crate::ui::unicode::Unicode;
 use icu_segmenter::GraphemeClusterSegmenter;
 use unicode_width::UnicodeWidthStr;
+
+use crate::ui::unicode::unicode_struct::Unicode;
 
 #[allow(dead_code)]
 #[derive(Default, Debug, Clone)]
