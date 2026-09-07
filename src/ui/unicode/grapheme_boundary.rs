@@ -1,8 +1,7 @@
-use icu_segmenter::GraphemeClusterSegmenter;
 use std::ops;
 use unicode_width::UnicodeWidthStr;
 
-use crate::ui::unicode::unicode_struct::Unicode;
+use crate::ui::unicode::{icu_engines::IcuEngines, unicode_struct::Unicode};
 
 #[allow(dead_code)]
 #[derive(Default, Debug, Clone)]
@@ -43,11 +42,10 @@ impl Unicode {
     rope_line: &str,
     line_idx: usize,
     line_to_byte: usize,
+    segmenter: IcuEngines,
   ) -> Vec<GraphemeBoundary> {
-    // Todo: Move the segementer to a struct to avoid regeneration.
-    let segment = GraphemeClusterSegmenter::new();
     // Generate vector containing byte indicies.
-    let breakpoints: Vec<usize> = segment.segment_str(rope_line).collect();
+    let breakpoints: Vec<usize> = segmenter.grapheme_cluster.segment_str(rope_line).collect();
 
     let mut cumulative_width = 0usize;
 
