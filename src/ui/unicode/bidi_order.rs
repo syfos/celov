@@ -14,6 +14,7 @@ impl Unicode {
   /// Flips the LTR character sequences in RTL words into RTL char sequence for correct logical and gramatical display.
   pub fn into_bidirectional_line(rope_line: &str) -> BidiAwareLine {
     // Generate bidirectional information about the rope line
+    // Note: Don't try to catch this in struct `IcuEngines` as this one is not an engine and is ment to be recalculated per run.
     let bidi_info = BidiInfo::new(rope_line, None);
 
     // The internal UBA(Unicode Bidirectional Algorithm) algorith works on Paragraphs.
