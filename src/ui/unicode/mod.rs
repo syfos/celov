@@ -5,7 +5,7 @@ use unicode_bidi::BidiInfo;
 use unicode_normalization::{is_nfc, is_nfd};
 use unicode_width::UnicodeWidthStr;
 
-use crate::ui::unicode::grapheme_boundary::GraphemeBoundary;
+use crate::ui::unicode::{bidi_order::BidiAwareLine, grapheme_boundary::GraphemeBoundary};
 
 pub mod grapheme_boundary;
 pub mod bidi_order;
@@ -28,14 +28,6 @@ pub struct Unicode {
   pub viewport_grapheme_lines: Vec<Vec<GraphemeBoundary>>,
   /// Viewport lines into Bidirection aware lines
   pub viewport_bidirectional_lines: Vec<BidiAwareLine>,
-}
-
-/// Data regarding the bidirectional line for rendering
-#[allow(dead_code)]
-pub struct BidiAwareLine {
-  pub level_number: u8,
-  pub is_rtl: bool,
-  pub reordered_line: String,
 }
 
 #[allow(dead_code)]

@@ -1,5 +1,12 @@
-use crate::ui::unicode::{BidiAwareLine, Unicode};
+use crate::ui::unicode::Unicode;
 use unicode_bidi::BidiInfo;
+/// Data regarding the bidirectional line for rendering
+#[allow(dead_code)]
+pub struct BidiAwareLine {
+  pub level_number: u8,
+  pub is_rtl: bool,
+  pub reordered_line: String,
+}
 
 #[allow(dead_code)]
 impl Unicode {
