@@ -11,16 +11,6 @@ pub mod bidi_order;
 pub mod grapheme_boundary;
 pub mod query_normalization;
 
-pub enum CanonicalType {
-  /// String contains `NFC` along `NFD`.
-  Mix,
-  /// String contains only `NFC`
-  Nfc,
-  /// String contains only `NFD`
-  Nfd,
-  /// String conatins neither of `NFC` or `NFD`
-  None,
-}
 
 /// Gives Unicode support to Sycode.
 #[allow(dead_code)]

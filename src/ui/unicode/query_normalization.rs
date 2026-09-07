@@ -1,5 +1,16 @@
+use crate::ui::unicode::Unicode;
 use unicode_normalization::{is_nfc, is_nfd};
-use crate::ui::unicode::{CanonicalType, Unicode};
+
+pub enum CanonicalType {
+  /// String contains `NFC` along `NFD`.
+  Mix,
+  /// String contains only `NFC`
+  Nfc,
+  /// String contains only `NFD`
+  Nfd,
+  /// String conatins neither of `NFC` or `NFD`
+  None,
+}
 
 #[allow(dead_code)]
 impl Unicode {
