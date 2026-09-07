@@ -5,6 +5,8 @@ use unicode_bidi::BidiInfo;
 use unicode_normalization::{is_nfc, is_nfd};
 use unicode_width::UnicodeWidthStr;
 
+use crate::ui::unicode::grapheme_boundary::GraphemeBoundary;
+
 pub mod grapheme_boundary;
 
 pub enum CanonicalType {
@@ -33,30 +35,6 @@ pub struct BidiAwareLine {
   pub level_number: u8,
   pub is_rtl: bool,
   pub reordered_line: String,
-}
-
-#[allow(dead_code)]
-#[derive(Default, Debug, Clone)]
-pub struct GraphemeBoundary {
-  pub line_idx: usize,
-
-  /// Tells width of current grapheme boundary in terms of `viewport's cells`.
-  /// Helps in movement of cursor.
-  /// ```
-  /// // Usage:
-  /// let new_col_pos = cursor_col + next_grapheme.width;
-  /// let new_col_pos = cursor_col - prev_grapheme.width;
-  /// ```
-  pub width: usize,
-
-  /// The cumulative width sum for the current grapheme boundary of the rope string.
-  /// Why exists?: To help [`Softwrap`] do the wrap math.
-  pub cumulative_width: usize,
-
-  /// The rope byte idx range the graphemes stands on.
-  /// E.g, say for a CJK string: [0..3, 3..6, 6..9, 9..12]
-  /// Your byte boundaries -> [0..=2, 3..=5, 6..=8, 9..=11]
-  pub absolute_byte_idx: ops::Range<usize>,
 }
 
 #[allow(dead_code)]
