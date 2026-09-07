@@ -1,9 +1,9 @@
 use std::collections::VecDeque;
 
-use crate::ui::editor::{
+use crate::ui::{editor::{
   Editor,
   new::{softwrap::SoftWrap, viewport::Viewport},
-};
+}, unicode::icu_engines::IcuEngines};
 
 #[allow(dead_code)]
 pub struct WrappedRope {
@@ -43,6 +43,7 @@ impl Editor {
     &mut self,
     softwrap: &mut SoftWrap,
     viewport: &Viewport,
+    icu: &IcuEngines,
   ) -> VecDeque<WrappedRope> {
     // Rope line index counter
     let mut line_idx = self.scroll_offset;
@@ -62,7 +63,7 @@ impl Editor {
       // Note: Each rope.line(idx) gives a string with only 1 valid linebreak at end.
       let string = self.rope.line(line_idx).to_string();
 
-      let data = softwrap.wrap(&string, viewport);
+      let data = softwrap.wrap(&string, viewport, icu);
       let slice_range = SoftWrap::get_row_range(&data, line_idx, &mut start_row);
       let line_break_char = Self::detect_trailing_linebreak_char(&string);
 

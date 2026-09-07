@@ -1,25 +1,13 @@
 use std::{collections::VecDeque, ops};
 
-use icu_segmenter::{LineSegmenter, LineSegmenterBorrowed, options::LineBreakOptions};
 use unicode_segmentation::UnicodeSegmentation;
 use unicode_width::UnicodeWidthStr;
 
-use crate::ui::editor::new::viewport::Viewport;
+use crate::ui::{editor::new::viewport::Viewport, unicode::icu_engines::IcuEngines};
 
 pub mod rope_to_wrap;
 
-pub struct SoftWrap {
-  pub line_segementer: LineSegmenterBorrowed<'static>,
-}
-
-#[allow(dead_code)]
-impl SoftWrap {
-  pub fn new() -> Self {
-    Self {
-      line_segementer: LineSegmenter::new_auto(LineBreakOptions::default()),
-    }
-  }
-}
+pub struct SoftWrap;
 
 #[allow(dead_code)]
 pub struct WrappedLine {
@@ -42,8 +30,13 @@ impl SoftWrap {
   ///
   /// Note: Only the last value of the returned vector will contain a line break char/unicode.
   #[allow(dead_code)]
-  pub fn wrap(&mut self, rope_line: &str, viewport: &Viewport) -> VecDeque<String> {
-    let breakpoints = self.get_breakpoints(rope_line);
+  pub fn wrap(
+    &mut self,
+    rope_line: &str,
+    viewport: &Viewport,
+    icu: &IcuEngines,
+  ) -> VecDeque<String> {
+    let breakpoints = Self::get_breakpoints(icu, rope_line);
     let mut wrap = VecDeque::new();
     let breakpoint_slices = Self::get_breakpoint_slices(rope_line, &breakpoints);
 
@@ -115,8 +108,8 @@ impl SoftWrap {
 
   /// Returns the vector containing breakpoints of given string.
   /// Note: the breakpoints are `unicode-aware`, `grapheme-aware` and more specifically `scripto continua-aware`
-  fn get_breakpoints(&mut self, rope_line: &str) -> Vec<usize> {
-    self.line_segementer.segment_str(rope_line).collect()
+  fn get_breakpoints(icu: &IcuEngines, rope_line: &str) -> Vec<usize> {
+    icu.line.segment_str(rope_line).collect()
   }
 
   /// Get the slices at valid break points of strings.
