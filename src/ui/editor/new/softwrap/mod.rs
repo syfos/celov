@@ -12,6 +12,7 @@ pub struct SoftWrap {
   pub line_segementer: LineSegmenterBorrowed<'static>,
 }
 
+#[allow(dead_code)]
 impl SoftWrap {
   pub fn new() -> Self {
     Self {
@@ -20,6 +21,7 @@ impl SoftWrap {
   }
 }
 
+#[allow(dead_code)]
 pub struct WrappedLine {
   pub rope_line_idx: usize,
   pub string: VecDeque<String>,
@@ -75,6 +77,7 @@ impl SoftWrap {
   }
 }
 
+#[allow(dead_code)]
 pub struct SliceRange {
   pub line_idx: usize,
   pub row_range: ops::RangeInclusive<usize>,

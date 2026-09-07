@@ -13,6 +13,7 @@ fn string_to_path(path_string: &str) -> anyhow::Result<PathBuf> {
   Ok(canonical)
 }
 
+#[allow(unused)]
 fn main() -> anyhow::Result<()> {
   let mut rope = Rope::from_reader(BufReader::new(fs::File::open(string_to_path(
     "~/impl/rust/fgit/src/bin/txt.txt",
