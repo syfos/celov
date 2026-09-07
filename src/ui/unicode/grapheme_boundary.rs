@@ -1,5 +1,5 @@
-use std::ops;
 use icu_segmenter::GraphemeClusterSegmenter;
+use std::ops;
 use unicode_width::UnicodeWidthStr;
 
 use crate::ui::unicode::unicode_struct::Unicode;

@@ -5,7 +5,6 @@ use crate::ui::editor::{
   new::{softwrap::SoftWrap, viewport::Viewport},
 };
 
-
 #[allow(dead_code)]
 pub struct WrappedRope {
   // The wrapped string.
@@ -40,7 +39,11 @@ pub enum LineBreakChar {
 #[allow(dead_code)]
 impl Editor {
   /// Iterate on the given rope line indices and return wrapped lines for viewport.
-  pub fn rope_to_wrap(&mut self, softwrap: &mut SoftWrap, viewport: &Viewport) -> VecDeque<WrappedRope> {
+  pub fn rope_to_wrap(
+    &mut self,
+    softwrap: &mut SoftWrap,
+    viewport: &Viewport,
+  ) -> VecDeque<WrappedRope> {
     // Rope line index counter
     let mut line_idx = self.scroll_offset;
     // Holds wrapped lines of viewport

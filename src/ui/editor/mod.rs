@@ -7,8 +7,8 @@ use ropey::Rope;
 pub mod cursor;
 pub mod edit;
 pub mod helper;
-pub mod render;
 pub mod new;
+pub mod render;
 
 #[derive(Default)]
 pub struct Editor {

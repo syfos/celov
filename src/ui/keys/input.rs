@@ -46,7 +46,7 @@ impl Tui {
         }
 
         KeyCode::Enter => {
-          self.editor.new_line(); 
+          self.editor.new_line();
         }
 
         _ => {}

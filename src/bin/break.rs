@@ -18,20 +18,20 @@ fn main() {
   println!("{row_taken}");
 }
 
-/// Returns ranges of wrapped lines, telling exactly how many rows of viewport have been occupied by a particular line. 
+/// Returns ranges of wrapped lines, telling exactly how many rows of viewport have been occupied by a particular line.
 /// Note: each element of `wrapped_lines` and the returned vector is equal to a rope line.
-  fn get_row_ranges() -> Vec<std::ops::RangeInclusive<usize>> {
-    let wrapped_lines_len: Vec<usize> = vec![3, 5 ,2];
-    let mut start = 1usize;
-    let mut row_ranges = Vec::new();
-    for wrapped_line in wrapped_lines_len {
-      let end = start + wrapped_line.saturating_sub(1);
-      row_ranges.push(start..=end);
-      start = end + 1;
-    }
-    println!("{row_ranges:?}");
-    row_ranges
+fn get_row_ranges() -> Vec<std::ops::RangeInclusive<usize>> {
+  let wrapped_lines_len: Vec<usize> = vec![3, 5, 2];
+  let mut start = 1usize;
+  let mut row_ranges = Vec::new();
+  for wrapped_line in wrapped_lines_len {
+    let end = start + wrapped_line.saturating_sub(1);
+    row_ranges.push(start..=end);
+    start = end + 1;
   }
+  println!("{row_ranges:?}");
+  row_ranges
+}
 
 /// Returns the vector containing breakpoints of given string.
 /// Note: the breakpoints are `unicode-aware`, `grapheme-aware` and more specifically `scripto continua-aware`
@@ -142,8 +142,8 @@ fn get_cumulative_widths_of_graphemes(slice: &str) -> Vec<SliceData> {
 /// let cumulative_widths = [0, 15, 30, 45, 60, 75, 90];
 /// let byte_indicies = [a, b, c, d, e, f, g];
 /// let viewport_width = 55;
-/// 
-/// most_equal(&slice_data_vector, viewport_width) 
+///
+/// most_equal(&slice_data_vector, viewport_width)
 /// // answer -->
 /// // byte_idx: d (45 is nearmost less than/equal side that is near to 55)
 /// ```
