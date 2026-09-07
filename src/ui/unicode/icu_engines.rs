@@ -10,6 +10,7 @@ pub struct IcuEngines {
   pub grapheme_cluster: GraphemeClusterSegmenterBorrowed<'static>,
 }
 
+#[allow(dead_code)]
 impl IcuEngines {
   /// Generate icu4x expensive engines.
   pub fn new() -> Self {
