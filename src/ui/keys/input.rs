@@ -1,4 +1,7 @@
-use crate::{action::IoSignal, ui::Tui};
+use crate::{
+  action::{IoSignal, ModeType},
+  ui::Tui,
+};
 use crossterm::event::{Event, KeyCode, KeyModifiers};
 use std::error::Error;
 
@@ -32,14 +35,19 @@ impl Tui {
           }
         }
 
-        KeyCode::Char('l') | KeyCode::Right => return Ok(IoSignal::Right),
-        KeyCode::Char('h') | KeyCode::Left => return Ok(IoSignal::Left),
-        KeyCode::Char('j') | KeyCode::Down => return Ok(IoSignal::Down),
-        KeyCode::Char('k') | KeyCode::Up => return Ok(IoSignal::Up),
+        KeyCode::Char('l') | KeyCode::Right if self.editor.mode == ModeType::Normal => return Ok(IoSignal::Right),
+        KeyCode::Char('h') | KeyCode::Left if self.editor.mode == ModeType::Normal=> return Ok(IoSignal::Left),
+        KeyCode::Char('j') | KeyCode::Down if self.editor.mode == ModeType::Normal=> return Ok(IoSignal::Down),
+        KeyCode::Char('k') | KeyCode::Up if self.editor.mode == ModeType::Normal=> return Ok(IoSignal::Up),
 
-        KeyCode::Char(char) => {
+        KeyCode::Char('i') => {
+          self.editor.mode = ModeType::Insert;
+        }
+
+        KeyCode::Char(char) if self.editor.mode == ModeType::Insert=> {
           self.editor.insert_char(char);
         }
+        KeyCode::Esc => self.editor.mode = ModeType::Normal,
 
         KeyCode::Backspace => {
           self.editor.remove_char();
