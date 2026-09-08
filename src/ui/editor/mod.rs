@@ -4,6 +4,8 @@ use std::{fs, io::BufReader};
 
 use ropey::Rope;
 
+use crate::action::ModeType;
+
 pub mod cursor;
 pub mod edit;
 pub mod helper;
@@ -15,6 +17,7 @@ pub struct Editor {
   pub scroll_offset: usize,
   pub rope: Rope,
   pub cursor: Cursor,
+  pub mode: ModeType,
 }
 
 #[allow(dead_code)]
@@ -46,6 +49,7 @@ impl Editor {
       scroll_offset: 0,
       rope: Rope::from_reader(reader)?,
       cursor: Cursor::default(),
+      mode: ModeType::Normal
     })
   }
 }
