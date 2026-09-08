@@ -38,7 +38,9 @@ pub enum IoSignal {
 }
 
 #[allow(dead_code)]
+#[derive(Default, PartialEq)]
 pub enum ModeType {
+  #[default]
   Normal,
   Visual,
   Insert,
