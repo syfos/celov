@@ -1,7 +1,7 @@
-use crate::ui::editor::Editor;
+use crate::ui::editor::{Cursor, Editor};
 use ratatui::{
   Frame,
-  layout::{Position, Rect},
+  layout::{Rect},
   text::{Line, Text},
   widgets::Paragraph,
 };
@@ -25,7 +25,8 @@ impl Editor {
     let screen_row = area.y + (self.cursor.1 - start_line) as u16;
     let screen_col = area.x + self.cursor.0 as u16;
 
-    frame.set_cursor_position(Position::new(screen_col, screen_row));
+    // frame.set_cursor_position(Position::new(screen_col, screen_row));
+    Cursor::render(&mut self.cursor, &self.mode, frame);
   }
 
   fn escape_hidden_chars(s: &str) -> String {
