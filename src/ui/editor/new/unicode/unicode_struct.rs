@@ -1,4 +1,6 @@
-use crate::ui::unicode::{bidi_order::BidiAwareLine, grapheme_boundary::GraphemeBoundary};
+use crate::ui::editor::new::unicode::{
+  bidi_order::BidiAwareLine, grapheme_boundary::GraphemeBoundary,
+};
 
 /// Gives Unicode support to Sycode.
 #[allow(dead_code)]

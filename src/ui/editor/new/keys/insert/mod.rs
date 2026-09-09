@@ -1,7 +1,8 @@
 use crossterm::event::{Event, KeyCode};
 
-use crate::{action::ModeType, ui::editor::Editor};
 use std::time::Duration;
+
+use crate::ui::editor::new::{core::Editor, keys::editor::ModeType};
 
 impl Editor {
   pub fn insert_mode_keymaps(&mut self) -> std::io::Result<bool> {
@@ -33,7 +34,7 @@ impl Editor {
           return Ok(false);
         }
 
-        KeyCode::Char(char) if self.mode == ModeType::Insert => {
+        KeyCode::Char(char) => {
           self.insert_char(char);
         }
 

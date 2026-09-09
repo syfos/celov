@@ -1,4 +1,9 @@
-pub mod motions;
-pub mod softwrap;
-pub mod viewport;
+pub mod core;
 pub mod cursor;
+pub mod keys;
+pub mod motions;
+pub mod render;
+pub mod softwrap;
+pub mod splits;
+pub mod unicode;
+pub mod viewport;

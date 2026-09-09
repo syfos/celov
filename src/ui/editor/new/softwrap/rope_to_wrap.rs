@@ -1,9 +1,8 @@
 use std::collections::VecDeque;
 
-use crate::ui::{editor::{
-  Editor,
-  new::{softwrap::SoftWrap, viewport::Viewport},
-}, unicode::icu_engines::IcuEngines};
+use crate::ui::editor::new::{
+  core::Editor, softwrap::SoftWrap, unicode::icu_engines::IcuEngines, viewport::Viewport,
+};
 
 #[allow(dead_code)]
 pub struct WrappedRope {

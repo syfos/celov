@@ -1,4 +1,5 @@
-use crate::{action::ModeType, ui::editor::Cursor};
+use crate::ui::editor::new::core::Cursor;
+use crate::ui::editor::new::keys::editor::ModeType;
 use ratatui::style::Color;
 use ratatui::{Frame, style::Style};
 

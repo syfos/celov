@@ -3,7 +3,7 @@ use std::{collections::VecDeque, ops};
 use unicode_segmentation::UnicodeSegmentation;
 use unicode_width::UnicodeWidthStr;
 
-use crate::ui::{editor::new::viewport::Viewport, unicode::icu_engines::IcuEngines};
+use crate::ui::editor::new::{unicode::icu_engines::IcuEngines, viewport::Viewport};
 
 pub mod rope_to_wrap;
 

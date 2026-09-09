@@ -1,4 +1,4 @@
-use crate::{action::ModeType, ui::editor::Editor};
+use crate::ui::editor::new::{core::Editor, keys::editor::ModeType};
 use crossterm::event::{Event, KeyCode, KeyModifiers};
 use std::time::Duration;
 

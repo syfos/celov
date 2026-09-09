@@ -1,4 +1,5 @@
-use crate::ui::editor::Editor;
+use crate::ui::editor::new::core::Editor;
+
 impl Editor {
   /// increment cursor col by the given number, clamp at length of cursor row.
   pub fn increment_cursor_col(&mut self, col: usize) {

@@ -1,9 +1,9 @@
-use crate::ui::editor::Editor;
-use crate::ui::{Tui, splits::Splits};
 use ratatui::DefaultTerminal;
 use std::{error::Error, result::Result};
 
-impl Tui {
+use crate::ui::editor::new::core::Editor;
+
+impl Editor {
   /// Wrapper over [`ratatui::run`].
   pub fn run(&mut self) -> Result<(), Box<dyn Error>> {
     ratatui::run(|terminal| self.renderer(terminal))?;
@@ -17,12 +17,14 @@ impl Tui {
   ) -> std::result::Result<(), Box<dyn Error>> {
     loop {
       terminal.draw(|frame| {
-        self.screen_area = frame.area();
-        Splits::render(&mut self.splits, frame);
-        Editor::render_rope(&mut self.editor, frame, self.screen_area);
+        let area = frame.area();
+        self.viewport_height = area.height as usize;
+        self.viewport_width = area.width as usize;
+        self.splits.render(frame);
+        self.render_rope(frame, area);
       })?;
 
-      if self.editor.enable_modal_keymaps()? {
+      if self.enable_modal_keymaps()? {
         break Ok(());
       }
     }

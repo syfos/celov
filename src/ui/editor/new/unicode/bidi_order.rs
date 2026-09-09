@@ -1,6 +1,7 @@
 use unicode_bidi::BidiInfo;
 
-use crate::ui::unicode::unicode_struct::Unicode;
+use crate::ui::editor::new::unicode::unicode_struct::Unicode;
+
 /// Data regarding the bidirectional line for rendering
 #[allow(dead_code)]
 pub struct BidiAwareLine {

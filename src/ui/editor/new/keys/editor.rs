@@ -1,4 +1,4 @@
-use crate::ui::editor::Editor;
+use crate::ui::editor::new::core::Editor;
 
 #[derive(Default, PartialEq)]
 pub enum ModeType {

@@ -1,7 +1,7 @@
 use std::ops;
 use unicode_width::UnicodeWidthStr;
 
-use crate::ui::unicode::{icu_engines::IcuEngines, unicode_struct::Unicode};
+use crate::ui::editor::new::unicode::{icu_engines::IcuEngines, unicode_struct::Unicode};
 
 #[allow(dead_code)]
 #[derive(Default, Debug, Clone)]

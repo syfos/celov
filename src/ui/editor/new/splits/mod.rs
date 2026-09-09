@@ -40,6 +40,7 @@ pub struct SplitAxis {
   pub splits: Vec<Rect>,
 }
 
+#[allow(dead_code)]
 impl SplitAxis {
   /// Increments splits counter correctly to prevent `count == 1` case as `screen_area/1` results in no splits.
   ///

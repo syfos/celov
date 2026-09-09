@@ -1,10 +1,11 @@
-use crate::ui::editor::{Cursor, Editor};
 use ratatui::{
   Frame,
-  layout::{Rect},
+  layout::Rect,
   text::{Line, Text},
   widgets::Paragraph,
 };
+
+use crate::ui::editor::new::core::{Cursor, Editor};
 impl Editor {
   pub fn render_rope(&mut self, frame: &mut Frame, area: Rect) {
     let net_lines = self.rope.len_lines();
