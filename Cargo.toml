@@ -1,15 +1,15 @@
 [package]
-name = "fgit"
-version = "0.2.0"
+name = "celov"
+version = "0.3.0"
 edition = "2024"
-description = "Fast Git built into tui"
+description = "A Combined Developer Environment (CDE) containing everyday development tools."
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/ipude/pugit"
-keywords = ["cli", "tui", "git", "gh", "pugit"]
+repository = "https://github.com/syfos/celov"
+keywords = ["sycode", "celov", "procpal", "tui", "cli"]
 categories = ["command-line-utilities"]
 
-default-run = "fgit"
+default-run = "celov"
 
 [dependencies]
 ratatui = "0.30.2"
