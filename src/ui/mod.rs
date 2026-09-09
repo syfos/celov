@@ -4,7 +4,6 @@ use ratatui::layout::Rect;
 pub mod buffer;
 pub mod editor;
 pub mod keys;
-pub mod process_input;
 pub mod renderer;
 pub mod splits;
 pub mod unicode;
