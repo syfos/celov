@@ -1,7 +1,15 @@
-# Pugit : The git wrapper
+# Celov
 
-*Hello*
+A **C**ombined Dev**elo**per En**v**ironment.
 
-Pugit uses git2-rs to execute git work.
+# Contains:
 
-Currently the project is under constant development hence README.md will be written later on.
+1. Sycode -A Terminal Unicode aware IDE.
+2. Procpal -A Real Shell.
+3. Fgit -A Full Git tui.
+
+# History:
+
+This project started as a git tui to replace `LazyGit`. 
+
+The project was named as `Pugit` then renamed to `Fgit` and now it is named `Celov`.
