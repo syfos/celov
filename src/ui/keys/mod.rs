@@ -1,5 +1,3 @@
-pub mod input;
-
 pub mod editor;
 pub mod general;
 pub mod normal;
