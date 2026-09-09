@@ -10,9 +10,9 @@ use crate::{
 impl Editor {
   pub fn enable_modal_keymaps(&mut self) -> std::io::Result<bool> {
     match self.mode {
-      ModeType::Normal => self.normal(),
-      ModeType::Visual => self.normal(),
-      ModeType::Insert => self.normal(),
+      ModeType::Normal => self.normal_mode_keymaps(),
+      ModeType::Visual => self.normal_mode_keymaps(),
+      ModeType::Insert => self.normal_mode_keymaps(),
     }
   }
 }
