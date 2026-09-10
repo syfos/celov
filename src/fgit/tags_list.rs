@@ -1,6 +1,6 @@
 use git2::Repository;
 
-use crate::git::Git;
+use crate::fgit::Git;
 
 #[allow(dead_code)]
 pub struct TagInfo {

@@ -1,4 +1,4 @@
-use crate::git::Git;
+use crate::fgit::Git;
 use git2::{Branch, Oid, Repository};
 
 #[allow(dead_code)]

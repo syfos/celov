@@ -1,6 +1,6 @@
 use std::result;
 
-use crate::git::{Git, branches::BranchesContainer};
+use crate::fgit::{Git, branches::BranchesContainer};
 use git2::{Branch, Repository};
 
 /// Contains ahead-behind data.

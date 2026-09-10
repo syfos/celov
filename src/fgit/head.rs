@@ -1,7 +1,7 @@
 use git2::{Branch, Oid};
 use git2::{ErrorCode, Repository};
 
-use crate::git::Git;
+use crate::fgit::Git;
 
 /// This enum contains status of Head.
 /// `Attached(String)` if head is a branch.

@@ -1,6 +1,6 @@
-use std::result;
+use std::{result};
 
-use crate::git::{
+use crate::fgit::{
   ahead_behind::ABData, branches::BranchesContainer, config::ConfigData, head::HeadCondition,
   index::StatusCode, refs::RefrenceContainer, remote::RemoteData, repo_state::RepoState,
   stash_list::StashData, tags_list::TagInfo,
@@ -20,6 +20,7 @@ pub mod stash_list;
 pub mod string_to_path;
 pub mod tags_list;
 pub mod utils;
+pub mod watcher;
 
 /// Fgit's data struct for Git.
 #[allow(dead_code)]

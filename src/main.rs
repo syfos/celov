@@ -1,12 +1,13 @@
-mod app;
+use crate::celov::Celov;
+
+mod celov;
 mod cmd;
-mod git;
+mod fgit;
 mod sycode;
-mod watcher;
 
 fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
   cmd::parser();
-  let mut app = crate::app::App::new()?;
+  let mut app = Celov::new()?;
   app.editor.run()?;
   Ok(())
 }

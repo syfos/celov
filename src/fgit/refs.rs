@@ -1,6 +1,6 @@
 use git2::{Oid, Repository};
 
-use crate::git::Git;
+use crate::fgit::Git;
 
 /// Container for derived loose refrences of repo.
 /// Fields must be of type:`Vec<RefrenceData>`

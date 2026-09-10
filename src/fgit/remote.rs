@@ -1,4 +1,4 @@
-use crate::git::Git;
+use crate::fgit::Git;
 use git2::Repository;
 
 /// Contains status of remote including its `name`, `url` and `pushurl`.

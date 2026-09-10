@@ -1,6 +1,6 @@
 use std::result;
 
-use crate::git::Git;
+use crate::fgit::Git;
 use git2::Repository;
 
 /// Individual entry and value of the `.git/config`.

@@ -1,6 +1,6 @@
 use std::result::Result;
 
-use crate::git::Git;
+use crate::fgit::Git;
 use git2::Repository;
 
 #[allow(dead_code)]

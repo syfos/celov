@@ -1,6 +1,6 @@
 use git2::{Repository, RepositoryState};
 
-use crate::git::Git;
+use crate::fgit::Git;
 /// Exact variants for the enum variants of RepositoryState.
 pub enum RepoState {
   Clean,

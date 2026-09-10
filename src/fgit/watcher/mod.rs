@@ -7,7 +7,7 @@ use std::{
   time::Duration,
 };
 
-use crate::git::Git;
+use crate::fgit::Git;
 use notify_debouncer_mini::{DebounceEventResult, new_debouncer};
 
 #[derive(Default)]

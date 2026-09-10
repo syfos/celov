@@ -1,4 +1,4 @@
-use crate::git::Git;
+use crate::fgit::Git;
 use anyhow::Context;
 use std::path::{Path, PathBuf};
 impl Git {
