@@ -1,6 +1,7 @@
 use crate::sycode::core::Editor;
 
 #[derive(Default, PartialEq)]
+#[allow(dead_code)]
 pub enum ModeType {
   #[default]
   Normal,
