@@ -40,7 +40,7 @@ impl Editor {
 
   pub fn new() -> io::Result<Editor> {
     let reader = BufReader::new(fs::File::open(Self::string_to_path(
-      "~/impl/rust/fgit/src/bin/txt.txt",
+      "~/impl/rust/celov/src/bin/txt.txt",
     )?)?);
     Ok(Self {
       scroll_offset: 0,

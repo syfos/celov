@@ -13,7 +13,7 @@ impl Celov {
   pub fn new() -> Result<Celov, Box<dyn std::error::Error>> {
     Ok(Celov {
       editor: Editor::new()?,
-      fgit: Git::new("~/impl/rust/fgit/")?,
+      fgit: Git::new("~/impl/rust/celov/")?,
       watcher_signal: WatchSignals::spawn()?,
     })
   }
