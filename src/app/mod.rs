@@ -1,4 +1,4 @@
-use crate::{git::Git, ui::editor::new::core::Editor, watcher::WatchSignals};
+use crate::{git::Git, sycode::core::Editor, watcher::WatchSignals};
 use std::sync::Arc;
 
 #[allow(dead_code)]

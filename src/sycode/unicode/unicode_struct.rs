@@ -1,4 +1,4 @@
-use crate::ui::editor::new::unicode::{
+use crate::sycode::unicode::{
   bidi_order::BidiAwareLine, grapheme_boundary::GraphemeBoundary,
 };
 

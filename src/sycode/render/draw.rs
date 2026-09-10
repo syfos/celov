@@ -1,7 +1,7 @@
 use ratatui::DefaultTerminal;
 use std::{error::Error, result::Result};
 
-use crate::ui::editor::new::core::Editor;
+use crate::sycode::core::Editor;
 
 impl Editor {
   /// Wrapper over [`ratatui::run`].

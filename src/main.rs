@@ -1,7 +1,7 @@
 mod app;
 mod cmd;
 mod git;
-mod ui;
+mod sycode;
 mod watcher;
 
 fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {

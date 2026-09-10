@@ -1,4 +1,4 @@
-use crate::ui::editor::new::core::Editor;
+use crate::sycode::core::Editor;
 
 impl Editor {
   /// increment cursor col by the given number, clamp at length of cursor row.

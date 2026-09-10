@@ -3,8 +3,9 @@ use std::io::{self, Error, ErrorKind};
 use std::path::{Path, PathBuf};
 use std::{fs, io::BufReader};
 
-use crate::ui::editor::new::keys::editor::ModeType;
-use crate::ui::editor::new::splits::Splits;
+use crate::sycode::keys::editor::ModeType;
+use crate::sycode::splits::Splits;
+
 #[derive(Default)]
 pub struct Editor {
   pub scroll_offset: usize,

@@ -1,6 +1,6 @@
 use std::ops::{self, Add};
 
-use crate::ui::editor::new::unicode::{icu_engines::IcuEngines, unicode_struct::Unicode};
+use crate::sycode::unicode::{icu_engines::IcuEngines, unicode_struct::Unicode};
 
 // A note about what to do next:
 // I was thinking about using grapheme width and word with for wordotion.

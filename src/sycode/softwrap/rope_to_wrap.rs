@@ -1,6 +1,6 @@
 use std::collections::VecDeque;
 
-use crate::ui::editor::new::{
+use crate::sycode::{
   core::Editor, softwrap::SoftWrap, unicode::icu_engines::IcuEngines, viewport::Viewport,
 };
 

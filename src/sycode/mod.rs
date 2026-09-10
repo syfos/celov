@@ -7,3 +7,4 @@ pub mod softwrap;
 pub mod splits;
 pub mod unicode;
 pub mod viewport;
+pub mod edit;

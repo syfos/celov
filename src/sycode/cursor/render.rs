@@ -1,5 +1,5 @@
-use crate::ui::editor::new::core::Cursor;
-use crate::ui::editor::new::keys::editor::ModeType;
+use crate::sycode::core::Cursor;
+use crate::sycode::keys::editor::ModeType;
 use ratatui::style::Color;
 use ratatui::{Frame, style::Style};
 

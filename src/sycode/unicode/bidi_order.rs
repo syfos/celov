@@ -1,6 +1,6 @@
 use unicode_bidi::BidiInfo;
 
-use crate::ui::editor::new::unicode::unicode_struct::Unicode;
+use crate::sycode::unicode::unicode_struct::Unicode;
 
 /// Data regarding the bidirectional line for rendering
 #[allow(dead_code)]

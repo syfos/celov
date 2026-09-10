@@ -1,4 +1,4 @@
-use crate::ui::editor::new::core::Editor;
+use crate::sycode::core::Editor;
 
 #[allow(dead_code)]
 impl Editor {

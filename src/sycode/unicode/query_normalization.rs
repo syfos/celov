@@ -1,6 +1,6 @@
 use unicode_normalization::{is_nfc, is_nfd};
 
-use crate::ui::editor::new::unicode::unicode_struct::Unicode;
+use crate::sycode::unicode::unicode_struct::Unicode;
 
 pub enum CanonicalType {
   /// String contains `NFC` along `NFD`.

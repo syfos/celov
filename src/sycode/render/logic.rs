@@ -5,7 +5,7 @@ use ratatui::{
   widgets::Paragraph,
 };
 
-use crate::ui::editor::new::core::{Cursor, Editor};
+use crate::sycode::core::{Cursor, Editor};
 impl Editor {
   pub fn render_rope(&mut self, frame: &mut Frame, area: Rect) {
     let net_lines = self.rope.len_lines();
