@@ -1,5 +1,6 @@
 pub mod core;
 pub mod cursor;
+pub mod edit;
 pub mod keymaps;
 pub mod motions;
 pub mod render;
@@ -7,4 +8,3 @@ pub mod softwrap;
 pub mod splits;
 pub mod unicode;
 pub mod viewport;
-pub mod edit;

@@ -16,13 +16,17 @@ impl Editor {
     terminal: &mut DefaultTerminal,
   ) -> std::result::Result<(), Box<dyn Error>> {
     loop {
+      let mut render_result = Ok(());
+
       terminal.draw(|frame| {
         let area = frame.area();
         self.viewport_height = area.height as usize;
         self.viewport_width = area.width as usize;
         self.splits.render(frame);
-        self.render_rope(frame, area);
+        render_result = self.render_rope(frame, area);
       })?;
+
+      render_result?;
 
       if self.enable_modal_keymaps()? {
         break Ok(());

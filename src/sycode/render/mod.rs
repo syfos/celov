@@ -1,2 +1,3 @@
-pub mod draw;
-pub mod logic;
+pub mod sycode;
+pub mod buffers;
+pub mod cursor;

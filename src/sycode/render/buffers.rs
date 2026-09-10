@@ -4,10 +4,14 @@ use ratatui::{
   text::{Line, Text},
   widgets::Paragraph,
 };
+use crate::sycode::core::{Editor};
 
-use crate::sycode::core::{Cursor, Editor};
 impl Editor {
-  pub fn render_rope(&mut self, frame: &mut Frame, area: Rect) {
+  pub fn render_rope(
+    &mut self,
+    frame: &mut Frame,
+    area: Rect,
+  ) -> Result<(), Box<dyn std::error::Error>> {
     let net_lines = self.rope.len_lines();
     let start_line = self.scroll_offset;
     let end_line = (start_line + area.height as usize).min(net_lines);
@@ -23,11 +27,8 @@ impl Editor {
     let paragraph = Paragraph::new(Text::from(lines));
     frame.render_widget(paragraph, area);
 
-    let screen_row = area.y + (self.cursor.1 - start_line) as u16;
-    let screen_col = area.x + self.cursor.0 as u16;
-
-    // frame.set_cursor_position(Position::new(screen_col, screen_row));
-    Cursor::render(&mut self.cursor, &self.mode, frame);
+    self.cursor.render(&self.mode, frame, false)?;
+    Ok(())
   }
 
   fn escape_hidden_chars(s: &str) -> String {
