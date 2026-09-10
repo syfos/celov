@@ -1,6 +1,6 @@
 pub mod core;
 pub mod cursor;
-pub mod keys;
+pub mod keymaps;
 pub mod motions;
 pub mod render;
 pub mod softwrap;

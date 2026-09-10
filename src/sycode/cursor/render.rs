@@ -1,5 +1,5 @@
 use crate::sycode::core::Cursor;
-use crate::sycode::keys::editor::ModeType;
+use crate::sycode::keymaps::editor::ModeType;
 use ratatui::style::Color;
 use ratatui::{Frame, style::Style};
 
