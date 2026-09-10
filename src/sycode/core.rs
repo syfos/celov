@@ -3,7 +3,7 @@ use std::io::{self, Error, ErrorKind};
 use std::path::{Path, PathBuf};
 use std::{fs, io::BufReader};
 
-use crate::sycode::keymaps::editor::ModeType;
+use crate::sycode::keymaps::modal::ModeType;
 use crate::sycode::splits::Splits;
 
 #[derive(Default)]

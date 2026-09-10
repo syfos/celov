@@ -1,4 +1,4 @@
-use crate::sycode::{core::Editor, keymaps::editor::ModeType};
+use crate::sycode::{core::Editor, keymaps::modal::ModeType};
 use crossterm::event::{Event, KeyCode, KeyModifiers};
 use std::time::Duration;
 

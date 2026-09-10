@@ -2,7 +2,7 @@ use crossterm::event::{Event, KeyCode};
 
 use std::time::Duration;
 
-use crate::sycode::{core::Editor, keymaps::editor::ModeType};
+use crate::sycode::{core::Editor, keymaps::modal::ModeType};
 
 impl Editor {
   pub fn insert_mode_keymaps(&mut self) -> std::io::Result<bool> {
