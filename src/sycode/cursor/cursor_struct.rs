@@ -1,5 +1,5 @@
-/// This temporary data sturct is ment to reduce chaos ans allow programming.
-/// Note: Ratatui accepts (col, row) instead of (row, col).
+/// Cordinates of native cursor. 
+/// Note: Ratatui accepts cordinates in `(col, row)` format instead of `(row, col)`.
 #[derive(Default, Clone, Copy)]
 pub struct Cursor {
   pub col: usize,
