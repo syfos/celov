@@ -2,6 +2,14 @@ use std::ops::Add;
 
 use crate::sycode::cursor::cursor_struct::Cursor;
 
+/*
+HashMap<line_idx, Vec<Slice>>
+where each Slice is a string,
+you call grapheme width of it,
+cursor motion respect grapheme,
+last index of vector -> has line break,
+*/
+
 // Cursor Slice and Cursor Line
 #[allow(dead_code)]
 impl Cursor {
