@@ -1,13 +1,13 @@
 use std::io::stdout;
 
-use crate::sycode::cursor::cursor_struct::{ CursorNew};
+use crate::sycode::cursor::cursor_struct::{ Cursor};
 use crate::sycode::keymaps::modal::ModeType;
 use crossterm::cursor::SetCursorStyle;
 use crossterm::execute;
 use ratatui::Frame;
 
 #[allow(dead_code)]
-impl CursorNew {
+impl Cursor {
   /// Renders native terminal cursor respecting the [`ModeType`].
   /// Put `is_blinking: false` to stop blinking.
   ///

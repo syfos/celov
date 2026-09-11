@@ -3,7 +3,7 @@ use std::io::{self, Error, ErrorKind};
 use std::path::{Path, PathBuf};
 use std::{fs, io::BufReader};
 
-use crate::sycode::cursor::cursor_struct::CursorNew;
+use crate::sycode::cursor::cursor_struct::Cursor;
 use crate::sycode::keymaps::modal::ModeType;
 use crate::sycode::splits::Splits;
 
@@ -11,7 +11,7 @@ use crate::sycode::splits::Splits;
 pub struct Editor {
   pub scroll_offset: usize,
   pub rope: Rope,
-  pub cursor: CursorNew,
+  pub cursor: Cursor,
   pub mode: ModeType,
   pub splits: Splits,
   pub viewport_height: usize,
@@ -46,7 +46,7 @@ impl Editor {
     Ok(Self {
       scroll_offset: 0,
       rope: Rope::from_reader(reader)?,
-      cursor: CursorNew::default(),
+      cursor: Cursor::default(),
       mode: ModeType::Normal,
       splits: Splits::default(),
       viewport_height: 0,

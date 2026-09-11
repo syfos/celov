@@ -1,7 +1,7 @@
 /// This temporary data sturct is ment to reduce chaos ans allow programming.
 /// Note: Ratatui accepts (col, row) instead of (row, col).
 #[derive(Default, Clone, Copy)]
-pub struct CursorNew{
+pub struct Cursor {
   pub col: usize,
   pub row: usize,
 }
