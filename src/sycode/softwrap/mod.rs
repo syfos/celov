@@ -7,7 +7,7 @@ use crate::sycode::{unicode::icu_engines::IcuEngines, viewport::Viewport};
 
 pub mod rope_to_wrap;
 
-pub struct SoftWrap;
+pub struct Softwrap;
 
 #[allow(dead_code)]
 pub struct WrappedLine {
@@ -24,7 +24,7 @@ pub struct SliceData {
 }
 
 #[allow(dead_code)]
-impl SoftWrap {
+impl Softwrap {
   /// Wraps the given `RopeSlice` string into
   /// slices that fit well under `Viewport width.`
   ///
@@ -78,7 +78,7 @@ pub struct SliceRange {
 }
 
 // Getters defined here
-impl SoftWrap {
+impl Softwrap {
   /// Returns the inclusive range of rows that have been occupied by the `wrapped line` given line.
   ///
   /// Notes:

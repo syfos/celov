@@ -1,7 +1,7 @@
 use std::collections::VecDeque;
 
 use crate::sycode::{
-  core::Editor, softwrap::SoftWrap, unicode::icu_engines::IcuEngines, viewport::Viewport,
+  core::Editor, softwrap::Softwrap, unicode::icu_engines::IcuEngines, viewport::Viewport,
 };
 
 #[allow(dead_code)]
@@ -40,7 +40,7 @@ impl Editor {
   /// Iterate on the given rope line indices and return wrapped lines for viewport.
   pub fn rope_to_wrap(
     &mut self,
-    softwrap: &mut SoftWrap,
+    softwrap: &mut Softwrap,
     viewport: &Viewport,
     icu: &IcuEngines,
   ) -> VecDeque<WrappedRope> {
@@ -63,7 +63,7 @@ impl Editor {
       let string = self.rope.line(line_idx).to_string();
 
       let data = softwrap.wrap(&string, viewport, icu);
-      let slice_range = SoftWrap::get_row_range(&data, line_idx, &mut start_row);
+      let slice_range = Softwrap::get_row_range(&data, line_idx, &mut start_row);
       let line_break_char = Self::detect_trailing_linebreak_char(&string);
 
       // For unique row ranges like [0..=5, 6..=9, 10..=15]
