@@ -18,7 +18,7 @@ pub struct WrappedLine {
 
 /// Holds `cumulative`width of a grapheme of a slice string
 /// along the byte index the grapheme belongs to.
-pub struct GraphemeData {
+pub struct GraphemeDataSlice {
   pub byte_idx: usize,
   pub grapheme_cumulative_width: usize,
 }
@@ -129,20 +129,9 @@ impl Softwrap {
       .map(|w| rope_line[w[0]..w[1]].to_string())
       .collect()
   }
-  /// Returns the `byte_idx` of the given slice whose `cumulative width` is less than or equal to `viewport`'s width and the most closest to the viewport width.
-  ///
-  /// E.g:
-  /// ```
-  /// // Imagine a vector of struct SliceData
-  /// let cumulative_widths = [0, 15, 30, 45, 60, 75, 90];
-  /// let byte_indicies = [a, b, c, d, e, f, g];
-  /// let viewport_width = 55;
-  ///
-  /// most_equal(&slice_data_vector, viewport_width)
-  /// // answer -->
-  /// // byte_idx: d (45 is nearmost less than/equal side that is near to 55)
-  /// ```
-  fn nearmost_byte_idx(cumulative_widths_of_grapheme: &[GraphemeData], viewport_width: &usize) -> usize {
+
+  /// Returns 
+  fn nearmost_byte_idx(cumulative_widths_of_grapheme: &[GraphemeDataSlice], viewport_width: &usize) -> usize {
     // Get the element idx whose cumulative width is nearmost to viewport's width.
     let matched_element_idx = cumulative_widths_of_grapheme
       .partition_point(|grapheme| grapheme.grapheme_cumulative_width <= *viewport_width)
@@ -159,14 +148,14 @@ impl Softwrap {
   /// `grapheme` of the given rope string slice.
   ///
   /// Note: uses `unicode_segmentation` crate under the hood.
-  fn get_cumulative_widths_of_graphemes(slice: &str) -> Vec<GraphemeData> {
+  fn get_cumulative_widths_of_graphemes(slice: &str) -> Vec<GraphemeDataSlice> {
     let mut cumulative_width_counter_per_grapheme = 0usize;
     let mut byte_idx = 0usize;
     let mut cumulative_widths_of_graphemes = Vec::new();
     for grpaheme in slice.graphemes(true) {
       byte_idx += grpaheme.len();
       cumulative_width_counter_per_grapheme += grpaheme.width();
-      cumulative_widths_of_graphemes.push(GraphemeData {
+      cumulative_widths_of_graphemes.push(GraphemeDataSlice {
         byte_idx,
         grapheme_cumulative_width: cumulative_width_counter_per_grapheme,
       });
