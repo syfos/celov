@@ -51,6 +51,8 @@ impl Softwrap {
       // Todo: Add toggle between `.width()` and `.width_cjk()`.
       let slice_width = str.width();
 
+      // Slice width lesser than viewport width means 
+      // the line fits well in the row.
       if slice_width > viewport.width {
         if !current_line.is_empty() {
           wrap.push_back(std::mem::take(&mut current_line));
@@ -153,6 +155,8 @@ impl Softwrap {
 
   /// Returns `cumulative width` data along `byte index` for each
   /// `grapheme` of the given rope string slice.
+  ///
+  /// Note: uses `unicode_segmentation` crate under the hood.
   fn get_cumulative_widths_of_graphemes(slice: &str) -> Vec<SliceData> {
     let mut cumulative_width_counter_per_grapheme = 0usize;
     let mut byte_idx = 0usize;
@@ -169,7 +173,7 @@ impl Softwrap {
   }
 
   fn break_at_grapheme(slice: &str, viewport_width: &usize) -> Vec<String> {
-    //
+    // Get the most closest cumulative width which is closest to viwport_width such that it is never greater than viewport width.
     let grapheme_aware_break = Self::most_equal(
       &Self::get_cumulative_widths_of_graphemes(slice),
       viewport_width,
