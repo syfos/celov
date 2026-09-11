@@ -45,7 +45,11 @@ impl Softwrap {
     let mut current_width = 0usize;
 
     for str in breakpoint_slices.iter() {
-      let slice_width = str.width_cjk();
+      // Note: This will mark ambigious characters
+      // as 1 cell wide.
+      // May not be fine for CJK-locale terminals. 
+      // Todo: Add toggle between `.width()` and `.width_cjk()`.
+      let slice_width = str.width();
 
       if slice_width > viewport.width {
         if !current_line.is_empty() {
@@ -155,7 +159,7 @@ impl Softwrap {
     let mut cumulative_widths_of_graphemes = Vec::new();
     for grpaheme in slice.graphemes(true) {
       byte_idx += grpaheme.len();
-      cumulative_width_counter_per_grapheme += grpaheme.width_cjk();
+      cumulative_width_counter_per_grapheme += grpaheme.width();
       cumulative_widths_of_graphemes.push(SliceData {
         byte_idx,
         grapheme_cumulative_width: cumulative_width_counter_per_grapheme,
@@ -178,7 +182,7 @@ impl Softwrap {
     // loops for all the cases where the remainer
     // would be wider than viewport_width
     // Note: The last value will be always dropped
-    if remainder.width_cjk() > *viewport_width {
+    if remainder.width() > *viewport_width {
       wrap.extend(Self::break_at_grapheme(remainder, viewport_width));
     }
     // This will catch such remainder whose terminal
