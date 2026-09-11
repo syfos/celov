@@ -6,8 +6,6 @@ pub struct Cursor {
   pub col_pos: usize,
   /// Position of cursor in row.
   pub row_pos: usize,
-  /// The row cursor is standing on. 
-  pub current_row_idx: usize,
   /// The rope line index the cursor is standing on.
   pub current_line_idx: usize,
 }
