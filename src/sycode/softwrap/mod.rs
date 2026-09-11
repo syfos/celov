@@ -36,9 +36,10 @@ impl SoftWrap {
     viewport: &Viewport,
     icu: &IcuEngines,
   ) -> VecDeque<String> {
-    let breakpoints = Self::get_breakpoints(icu, rope_line);
     let mut wrap = VecDeque::new();
-    let breakpoint_slices = Self::get_breakpoint_slices(rope_line, &breakpoints);
+
+    // Get scripto continua and grapheme aware breakpoints.
+    let breakpoint_slices = Self::get_breakpoint_slices(icu, rope_line);
 
     let mut current_line = String::new();
     let mut current_width = 0usize;
@@ -113,8 +114,10 @@ impl SoftWrap {
   }
 
   /// Get the slices at valid break points of strings.
+  /// Note: This method internally calls `Softwrap::get_breakpoints` so by default the breakpoints are `grapheme` aware and scripto continua` aware.
   #[allow(dead_code)]
-  fn get_breakpoint_slices(rope_line: &str, breakpoints: &[usize]) -> Vec<String> {
+  pub fn get_breakpoint_slices(icu: &IcuEngines, rope_line: &str) -> Vec<String> {
+    let breakpoints = &Self::get_breakpoints(icu, rope_line);
     breakpoints
       .windows(2)
       .map(|w| rope_line[w[0]..w[1]].to_string())
