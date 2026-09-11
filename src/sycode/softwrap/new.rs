@@ -12,8 +12,7 @@ pub struct ProcessedLine {
 
 #[allow(dead_code)]
 impl Wrap {
-  /// Returns vector of byte indicies which have a valid break opportunity.
-  /// Note: The byte indices are absolute byte indices of the given rope line.
+  /// Returns [`ProcessedLine`] containing `line_idx`, `line_to_byte` of the rope line and its `slices` which are `grapheme` and `scripto continua` aware.
   fn get_processed_line(icu: &IcuEngines, rope: &Rope, line_idx: usize) -> ProcessedLine {
     let line = rope.line(line_idx).to_string();
     let line_to_byte = rope.line_to_byte(line_idx);
