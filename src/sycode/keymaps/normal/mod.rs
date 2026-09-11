@@ -67,22 +67,22 @@ impl Editor {
 
         // Movement Controls
         KeyCode::Char('k') | KeyCode::Up => {
-          self.decrement_cursor_row(1);
+          // self.decrement_cursor_row(1);
           return Ok(false);
         }
 
         KeyCode::Char('j') | KeyCode::Down => {
-          self.increment_cursor_row(1);
+          // self.increment_cursor_row(1);
           return Ok(false);
         }
 
         KeyCode::Char('h') | KeyCode::Left => {
-          self.decrement_cursor_col(1);
+          // self.decrement_cursor_col(1);
           return Ok(false);
         }
 
         KeyCode::Char('l') | KeyCode::Right => {
-          self.increment_cursor_col(1);
+          // self.increment_cursor_col(1);
           return Ok(false);
         }
 
