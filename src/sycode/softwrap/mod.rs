@@ -142,7 +142,7 @@ impl Softwrap {
   /// // answer -->
   /// // byte_idx: d (45 is nearmost less than/equal side that is near to 55)
   /// ```
-  fn most_equal(cumulative_widths_of_grapheme: &[SliceData], viewport_width: &usize) -> usize {
+  fn nearmost_byte_idx(cumulative_widths_of_grapheme: &[SliceData], viewport_width: &usize) -> usize {
     // The element index already has byte idx and the second value.
     let matched_element_idx = cumulative_widths_of_grapheme
       .partition_point(|grapheme| grapheme.grapheme_cumulative_width <= *viewport_width)
@@ -174,7 +174,7 @@ impl Softwrap {
 
   fn break_at_grapheme(slice: &str, viewport_width: &usize) -> Vec<String> {
     // Get the most closest cumulative width which is closest to viwport_width such that it is never greater than viewport width.
-    let grapheme_aware_break = Self::most_equal(
+    let grapheme_aware_break = Self::nearmost_byte_idx(
       &Self::get_cumulative_widths_of_graphemes(slice),
       viewport_width,
     );
