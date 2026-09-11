@@ -6,6 +6,7 @@ use unicode_width::UnicodeWidthStr;
 use crate::sycode::{unicode::icu_engines::IcuEngines, viewport::Viewport};
 
 pub mod rope_to_wrap;
+pub mod new;
 
 pub struct Softwrap;
 
