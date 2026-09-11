@@ -1,13 +1,13 @@
 use std::io::stdout;
 
-use crate::sycode::cursor::cursor_struct::Cursor;
+use crate::sycode::cursor::cursor_struct::{ CursorNew};
 use crate::sycode::keymaps::modal::ModeType;
 use crossterm::cursor::SetCursorStyle;
 use crossterm::execute;
 use ratatui::Frame;
 
 #[allow(dead_code)]
-impl Cursor {
+impl CursorNew {
   /// Renders native terminal cursor respecting the [`ModeType`].
   /// Put `is_blinking: false` to stop blinking.
   ///
@@ -56,7 +56,7 @@ impl Cursor {
     cursor_type: SetCursorStyle,
   ) -> Result<(), Box<dyn std::error::Error>> {
     // Sets the cursor's postion irrespective of buffer.
-    frame.set_cursor_position((self.0 as u16, self.1 as u16));
+    frame.set_cursor_position((self.col as u16, self.row as u16));
     // send it to the terminal to process
     execute!(stdout(), cursor_type)?;
     Ok(())
