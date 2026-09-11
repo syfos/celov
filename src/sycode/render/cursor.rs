@@ -56,7 +56,7 @@ impl Cursor {
     cursor_type: SetCursorStyle,
   ) -> Result<(), Box<dyn std::error::Error>> {
     // Sets the cursor's postion irrespective of buffer.
-    frame.set_cursor_position((self.col as u16, self.row as u16));
+    frame.set_cursor_position((self.col_pos as u16, self.row_pos as u16));
     // send it to the terminal to process
     execute!(stdout(), cursor_type)?;
     Ok(())
