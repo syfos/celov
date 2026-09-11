@@ -1,6 +1,6 @@
 use std::io::stdout;
 
-use crate::sycode::core::Cursor;
+use crate::sycode::cursor::cursor_struct::Cursor;
 use crate::sycode::keymaps::modal::ModeType;
 use crossterm::cursor::SetCursorStyle;
 use crossterm::execute;

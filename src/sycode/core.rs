@@ -3,6 +3,7 @@ use std::io::{self, Error, ErrorKind};
 use std::path::{Path, PathBuf};
 use std::{fs, io::BufReader};
 
+use crate::sycode::cursor::cursor_struct::Cursor;
 use crate::sycode::keymaps::modal::ModeType;
 use crate::sycode::splits::Splits;
 
@@ -54,6 +55,3 @@ impl Editor {
   }
 }
 
-/// The cursor position in `(col, row)` format.
-#[derive(Default, Clone, Copy)]
-pub struct Cursor(pub usize, pub usize);
