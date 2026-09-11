@@ -15,37 +15,37 @@ impl Editor {
       match key.code {
         // Movement Controls
         KeyCode::Up => {
-          self.decrement_cursor_row(1);
+          // self.decrement_cursor_row(1);
           return Ok(false);
         }
 
         KeyCode::Down => {
-          self.increment_cursor_row(1);
+          // self.increment_cursor_row(1);
           return Ok(false);
         }
 
         KeyCode::Left => {
-          self.decrement_cursor_col(1);
+          // self.decrement_cursor_col(1);
           return Ok(false);
         }
 
         KeyCode::Right => {
-          self.increment_cursor_col(1);
+          // self.increment_cursor_col(1);
           return Ok(false);
         }
 
         KeyCode::Char(char) => {
-          self.insert_char(char);
+          // self.insert_char(char);
         }
 
         KeyCode::Esc => self.mode = ModeType::Normal,
 
         KeyCode::Backspace => {
-          self.remove_char();
+          // self.remove_char();
         }
 
         KeyCode::Enter => {
-          self.new_line();
+          // self.new_line();
         }
         _ => {}
       }
