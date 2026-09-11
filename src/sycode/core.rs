@@ -3,7 +3,7 @@ use std::io::{self, Error, ErrorKind};
 use std::path::{Path, PathBuf};
 use std::{fs, io::BufReader};
 
-use crate::sycode::cursor::cursor_struct::{Cursor, CursorNew};
+use crate::sycode::cursor::cursor_struct::CursorNew;
 use crate::sycode::keymaps::modal::ModeType;
 use crate::sycode::splits::Splits;
 
@@ -54,4 +54,3 @@ impl Editor {
     })
   }
 }
-
