@@ -18,7 +18,7 @@ pub struct WrappedLine {
 
 /// Holds `cumulative`width of a grapheme of a slice string
 /// along the byte index the grapheme belongs to.
-pub struct SliceData {
+pub struct GraphemeData {
   pub byte_idx: usize,
   pub grapheme_cumulative_width: usize,
 }
@@ -142,11 +142,13 @@ impl Softwrap {
   /// // answer -->
   /// // byte_idx: d (45 is nearmost less than/equal side that is near to 55)
   /// ```
-  fn nearmost_byte_idx(cumulative_widths_of_grapheme: &[SliceData], viewport_width: &usize) -> usize {
-    // The element index already has byte idx and the second value.
+  fn nearmost_byte_idx(cumulative_widths_of_grapheme: &[GraphemeData], viewport_width: &usize) -> usize {
+    // Get the element idx whose cumulative width is nearmost to viewport's width.
     let matched_element_idx = cumulative_widths_of_grapheme
       .partition_point(|grapheme| grapheme.grapheme_cumulative_width <= *viewport_width)
       .saturating_sub(1);
+
+    // Return the byte index held by the matched element idx.
     cumulative_widths_of_grapheme
       .get(matched_element_idx)
       .unwrap()
@@ -157,14 +159,14 @@ impl Softwrap {
   /// `grapheme` of the given rope string slice.
   ///
   /// Note: uses `unicode_segmentation` crate under the hood.
-  fn get_cumulative_widths_of_graphemes(slice: &str) -> Vec<SliceData> {
+  fn get_cumulative_widths_of_graphemes(slice: &str) -> Vec<GraphemeData> {
     let mut cumulative_width_counter_per_grapheme = 0usize;
     let mut byte_idx = 0usize;
     let mut cumulative_widths_of_graphemes = Vec::new();
     for grpaheme in slice.graphemes(true) {
       byte_idx += grpaheme.len();
       cumulative_width_counter_per_grapheme += grpaheme.width();
-      cumulative_widths_of_graphemes.push(SliceData {
+      cumulative_widths_of_graphemes.push(GraphemeData {
         byte_idx,
         grapheme_cumulative_width: cumulative_width_counter_per_grapheme,
       });
