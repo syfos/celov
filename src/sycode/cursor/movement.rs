@@ -10,4 +10,10 @@ impl Cursor {
   pub fn move_down_row(&mut self, n: usize, max_viewport_row: usize) {
     self.row_pos = self.row_pos.add(n).min(max_viewport_row);
   }
+
+  /// Move cursor `upward` by `n` rows.
+  /// Note: Clamps at the first row of viewport.
+  pub fn move_up_row(&mut self, n: usize) {
+    self.row_pos = self.row_pos.saturating_sub(n);
+  }
 }
