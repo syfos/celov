@@ -16,4 +16,13 @@ impl Cursor {
   pub fn move_up_row(&mut self, n: usize) {
     self.row_pos = self.row_pos.saturating_sub(n);
   }
+
+  /// Move cursor `upward` by `n` rows.
+  /// Note: Clamps at the first row of viewport.
+  pub fn move_left(&mut self, n: usize) {
+    self.col_pos = self.col_pos.saturating_sub(n);
+    if self.col_pos.eq(&0usize) && self.row_pos.ne(&0usize) {
+      // Todo: Set cursor before line break char of previous line.
+    }
+  }
 }
