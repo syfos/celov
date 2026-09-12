@@ -40,4 +40,22 @@ impl Wrap {
       slices,
     }
   }
+
+  fn get_cumulative_width_sums(slice: &str) -> Vec<SliceGraphemeWidth> {
+    let mut prev_cumulative_width = 0usize;
+    let mut byte_idx = 0usize;
+    let mut cumsum_width = Vec::new();
+
+    for grapheme in slice.graphemes(true) {
+      byte_idx += grapheme.len();
+      prev_cumulative_width += grapheme.width();
+      cumsum_width.push(SliceGraphemeWidth {
+        byte_idx,
+        cumulative_width: prev_cumulative_width,
+      });
+    }
+
+    cumsum_width
+  }
 }
+
