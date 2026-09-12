@@ -1,4 +1,6 @@
 use ropey::Rope;
+use unicode_segmentation::UnicodeSegmentation;
+use unicode_width::UnicodeWidthStr;
 
 use crate::sycode::unicode::icu_engines::IcuEngines;
 
@@ -10,6 +12,13 @@ pub struct ProcessedLine {
   pub slices: Vec<String>,
 }
 
+/// It holds value cumulative cell width of a particular grapheme from [`ProcessedLine`]'s slice along the byte index of that grapheme.
+///
+/// Note: The byte index is relative to the particular slice which belongs to an element of `slices` of [`ProcessesLine`]
+pub struct SliceGraphemeWidth {
+  pub byte_idx: usize,
+  pub cumulative_width: usize,
+}
 #[allow(dead_code)]
 impl Wrap {
   /// Returns [`ProcessedLine`] containing `line_idx`, `line_to_byte` of the rope line and its `slices` which are `grapheme` and `scripto continua` aware.
