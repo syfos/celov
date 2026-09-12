@@ -24,3 +24,9 @@ impl IcuEngines {
     }
   }
 }
+
+impl Default for IcuEngines {
+  fn default() -> Self {
+    Self::new()
+  }
+}
