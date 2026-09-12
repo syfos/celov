@@ -7,7 +7,7 @@ use unicode_width::UnicodeWidthStr;
 use crate::sycode::unicode::icu_engines::IcuEngines;
 
 #[derive(Default)]
-pub struct Wrap {
+pub struct Softwrap {
   // k -> Line idx, v -> Fitting slices/Fitting Line
   pub displayed_lines: BTreeMap<usize, Vec<String>>,
 }
@@ -33,7 +33,7 @@ pub struct FittingSlices {
 }
 
 #[allow(dead_code)]
-impl Wrap {
+impl Softwrap {
   /// Returns [`ProcessedLine`] containing `line_idx`, `line_to_byte` of the rope line and its `slices` which are `grapheme` and `scripto continua` aware.
   fn get_processed_line(icu: &IcuEngines, rope: &Rope, line_idx: usize) -> ProcessedLine {
     let line = rope.line(line_idx).to_string();
