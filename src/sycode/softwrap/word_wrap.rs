@@ -102,12 +102,14 @@ impl WordWrap {
     viewport_width: usize,
     wrapped_rope: &mut WrappedRope,
   ) {
+    // Generate internally.
     let words = &Self::get_words(icu, rope_line);
     // The byte idx to break line at.
     let fit_type = Self::get_nearmost_to(words, viewport_width);
 
     match fit_type {
       FitType::Empty | FitType::Whole => {
+        // Note: Since we generate words vector per iteration hence the wrapped_rope is always unique.
         wrapped_rope.wrapped_slices.push(rope_line.into());
         return;
       }
