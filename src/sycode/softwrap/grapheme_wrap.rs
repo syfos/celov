@@ -72,6 +72,6 @@ pub fn wrap_grapheme_level(line: &str, viewport_width: usize) -> Vec<String> {
   }
 
   // Triggers only where remainder's width is gt viewport width. Will loop until the remainder breaks in desired width.
-  wrap_grapheme_level(remainder, viewport_width);
+  wrapped_line.extend(wrap_grapheme_level(remainder, viewport_width));
   wrapped_line
 }
