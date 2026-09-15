@@ -4,6 +4,7 @@ pub mod edit;
 pub mod keymaps;
 pub mod motions;
 pub mod render;
+pub mod scroll;
 pub mod softwrap;
 pub mod splits;
 pub mod unicode;
