@@ -1,8 +1,6 @@
 use std::{collections::BTreeMap, ops};
-
 use unicode_width::UnicodeWidthStr;
-
-use crate::sycode::{softwrap::grapheme_wrap, unicode::icu_engines::IcuEngines};
+use crate::sycode::{unicode::icu_engines::IcuEngines};
 
 /// Rope lines of the viewport that have been wrapped for word aware visual display.
 /// Info:
@@ -116,9 +114,19 @@ impl WordWrap {
 
       // Note: This is currently blunt for the overlfowing lines that have more than 1 words.
       // My review: It is fine as I am not going to stare screen for 5 hours to fix it, atleast for now.
+      // Fact: The overflowed string can't be empty.
       FitType::Overflow => {
-        let wrapped_line = grapheme_wrap::wrap_grapheme_level(rope_line, viewport_width);
+        let overflow_word = Self::get_overflow_word_string(rope_line, words);
+
+        let reaminder = &rope_line[words.get(0).unwrap().1.end..];
+
+        let wrapped_line = Self::wrap_grapheme_level(&overflow_word, viewport_width);
+
         wrapped_rope.wrapped_slices.extend(wrapped_line);
+
+        if !reaminder.is_empty() {
+          self.wrap(icu, reaminder, viewport_width, wrapped_rope);
+        }
       }
 
       FitType::Slice(_word_idx, byte_idx) => {
@@ -133,12 +141,7 @@ impl WordWrap {
 
         // Else break further
         // Note: It automatically stores the value hence no need to worry about unused code.
-        self.wrap(
-          icu,
-          remainder,
-          viewport_width,
-          wrapped_rope,
-        );
+        self.wrap(icu, remainder, viewport_width, wrapped_rope);
       }
     }
   }
