@@ -1,7 +1,10 @@
-use crate::{fgit::{Git, watcher::WatchSignals}, sycode::core::Editor};
+use crate::{
+  fgit::{Git, watcher::WatchSignals},
+  sycode::core::Editor,
+};
 use std::sync::Arc;
 
-/// A combined developer environment 
+/// A combined developer environment
 #[allow(dead_code)]
 pub struct Celov {
   pub editor: Editor,

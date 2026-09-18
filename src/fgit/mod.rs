@@ -1,4 +1,4 @@
-use std::{result};
+use std::result;
 
 use crate::fgit::{
   ahead_behind::ABData, branches::BranchesContainer, config::ConfigData, head::HeadCondition,

@@ -1,6 +1,6 @@
+use crate::sycode::unicode::icu_engines::IcuEngines;
 use std::{collections::BTreeMap, ops};
 use unicode_width::UnicodeWidthStr;
-use crate::sycode::{unicode::icu_engines::IcuEngines};
 
 /// Rope lines of the viewport that have been wrapped for word aware visual display.
 /// Info:

@@ -1,2 +1,2 @@
-pub mod movement;
 pub mod cursor_struct;
+pub mod movement;

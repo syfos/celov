@@ -35,7 +35,12 @@ impl Cursor {
   }
   /// Move cursor `right` by `n` columns.
   /// Note: Clamps at the last most row of viewport.
-  pub fn move_right(&mut self, next_grapheme_width: usize, line_slice_width: usize, max_viewport_row: usize) {
+  pub fn move_right(
+    &mut self,
+    next_grapheme_width: usize,
+    line_slice_width: usize,
+    max_viewport_row: usize,
+  ) {
     // Move to next row start if there is one and cursor is at width of given slice.
     if self.col_pos.eq(&line_slice_width) && self.row_pos.ne(&max_viewport_row) {
       self.move_down_row(1, max_viewport_row);

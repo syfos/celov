@@ -1,10 +1,10 @@
+use crate::sycode::core::Editor;
 use ratatui::{
   Frame,
   layout::Rect,
   text::{Line, Text},
   widgets::Paragraph,
 };
-use crate::sycode::core::{Editor};
 
 impl Editor {
   pub fn render_rope(
