@@ -5,7 +5,7 @@ use std::{fs, io::BufReader};
 
 use crate::sycode::cursor::cursor_struct::Cursor;
 use crate::sycode::keymaps::modal::ModeType;
-use crate::sycode::softwrap::new::Wrap;
+use crate::sycode::softwrap::word_wrap::WordWrap;
 use crate::sycode::splits::Splits;
 use crate::sycode::unicode::icu_engines::IcuEngines;
 
@@ -16,7 +16,7 @@ pub struct Editor {
   pub cursor: Cursor,
   pub mode: ModeType,
   pub splits: Splits,
-  pub softwrap: Wrap,
+  pub softwrap: WordWrap,
   pub icu: IcuEngines,
   pub viewport_height: usize,
   pub viewport_width: usize,
@@ -55,7 +55,7 @@ impl Editor {
       splits: Splits::default(),
       viewport_height: 0,
       viewport_width: 0,
-      softwrap: Wrap::default(),
+      softwrap: WordWrap::default(),
       icu: IcuEngines::new(),
     })
   }
