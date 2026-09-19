@@ -1,24 +1,22 @@
 use crate::sycode::unicode::icu_engines::IcuEngines;
-use std::{collections::BTreeMap, ops};
+use std::ops;
 use unicode_width::UnicodeWidthStr;
 
 /// Rope lines of the viewport that have been wrapped for word aware visual display.
+/// Note: Some wrapped slices of the [`WrappedRope`] may contain grapheme cluster aware break instead of word break.
+/// If there would have been no valid word of width less than or equal to viewport width.
+///   
 /// Info:
 /// 1. The word aware wrap is scripto continua and scripto distincta.
 /// 2. The Grapheme aware wrap is just grapheme cluster aware.
-/// Note: Some wrapped slices of the [`WrappedRope`] may contain grapheme cluster aware break instead of word break if there would have been no valid word of width less than or equal to viewport width.
+#[derive(Default)]
+#[allow(unused)]
 pub struct WordWrap {
-  // Key -> Line idx of rope line.
-  // Value -> [`WrappedRope`].
-  lines: BTreeMap<usize, WrappedRope>,
-}
-
-/// Wrapped slices of rope line that take exactly one row.
-/// Tip: The length of `wrapped_slices: Vec<String>` == number of rows occupied by the whole rope line.
-/// Note: Some wrapped slices of the rope may contain grapheme cluster aware break instead of word aware break if there would have been no valid word of width less than or equal to viewport width.
-pub struct WrappedRope {
+  line_idx: usize,
   wrapped_slices: Vec<String>,
   row_occupied_real_range: ops::Range<usize>,
+  // Key -> Line idx of rope line.
+  // Value -> [`WrappedRope`].
 }
 
 enum FitType {
@@ -33,6 +31,7 @@ enum FitType {
   Empty,
 }
 
+#[allow(dead_code)]
 impl WordWrap {
   fn get_words(icu: &IcuEngines, rope_line: &str) -> Vec<(usize, ops::Range<usize>)> {
     let bounds: Vec<usize> = icu.word.segment_str(rope_line).collect();
@@ -93,13 +92,7 @@ impl WordWrap {
   }
 
   /// Note: You have to put the words vector from outside as this function does loops repeatedly unless the line is fully wrapped.
-  fn wrap(
-    &mut self,
-    icu: &IcuEngines,
-    rope_line: &str,
-    viewport_width: usize,
-    wrapped_rope: &mut WrappedRope,
-  ) {
+  fn wrap(&mut self, icu: &IcuEngines, rope_line: &str, viewport_width: usize) {
     // Generate internally.
     let words = &Self::get_words(icu, rope_line);
     // The byte idx to break line at.
@@ -107,41 +100,39 @@ impl WordWrap {
 
     match fit_type {
       FitType::Empty | FitType::Whole => {
-        // Note: Since we generate words vector per iteration hence the wrapped_rope is always unique.
-        wrapped_rope.wrapped_slices.push(rope_line.into());
-        return;
+        // The word vector is generated per iteration.
+        // Hence, Every line is unique.
+        self.wrapped_slices.push(rope_line.into())
       }
 
-      // Note: This is currently blunt for the overlfowing lines that have more than 1 words.
-      // My review: It is fine as I am not going to stare screen for 5 hours to fix it, atleast for now.
-      // Fact: The overflowed string can't be empty.
+      // Fact: The overflowed string can never be empty.
       FitType::Overflow => {
         let overflow_word = Self::get_overflow_word_string(rope_line, words);
 
-        let reaminder = &rope_line[words.get(0).unwrap().1.end..];
+        let reaminder = &rope_line[words.first().unwrap().1.end..];
 
         let wrapped_line = Self::wrap_grapheme_level(&overflow_word, viewport_width);
 
-        wrapped_rope.wrapped_slices.extend(wrapped_line);
+        self.wrapped_slices.extend(wrapped_line);
 
         if !reaminder.is_empty() {
-          self.wrap(icu, reaminder, viewport_width, wrapped_rope);
+          self.wrap(icu, reaminder, viewport_width);
         }
       }
 
       FitType::Slice(_word_idx, byte_idx) => {
         let slice = &rope_line[..byte_idx];
-        wrapped_rope.wrapped_slices.push(slice.into());
+        self.wrapped_slices.push(slice.into());
         let remainder = &rope_line[byte_idx..];
 
         if remainder.width() <= viewport_width {
-          wrapped_rope.wrapped_slices.push(remainder.into());
+          self.wrapped_slices.push(remainder.into());
           return;
         }
 
         // Else break further
         // Note: It automatically stores the value hence no need to worry about unused code.
-        self.wrap(icu, remainder, viewport_width, wrapped_rope);
+        self.wrap(icu, remainder, viewport_width);
       }
     }
   }
