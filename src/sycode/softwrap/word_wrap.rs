@@ -12,9 +12,9 @@ use unicode_width::UnicodeWidthStr;
 #[derive(Default)]
 #[allow(unused)]
 pub struct WordWrap {
-  line_idx: usize,
-  wrapped_slices: Vec<String>,
-  row_occupied_real_range: ops::Range<usize>,
+  pub line_idx: usize,
+  pub wrapped_slices: Vec<String>,
+  pub row_occupied_real_range: ops::Range<usize>,
   // Key -> Line idx of rope line.
   // Value -> [`WrappedRope`].
 }
@@ -92,7 +92,7 @@ impl WordWrap {
   }
 
   /// Note: You have to put the words vector from outside as this function does loops repeatedly unless the line is fully wrapped.
-  fn wrap(&mut self, icu: &IcuEngines, rope_line: &str, viewport_width: usize) {
+  pub fn wrap(&mut self, icu: &IcuEngines, rope_line: &str, viewport_width: usize) {
     // Generate internally.
     let words = &Self::get_words(icu, rope_line);
     // The byte idx to break line at.
