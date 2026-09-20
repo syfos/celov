@@ -11,7 +11,7 @@ use unicode_width::UnicodeWidthStr;
 /// 2. The Grapheme aware wrap is just grapheme cluster aware.
 #[derive(Default)]
 #[allow(unused)]
-pub struct WordWrap {
+pub struct Softwrap {
   pub line_idx: usize,
   pub wrapped_slices: Vec<String>,
   pub row_occupied_real_range: ops::Range<usize>,
@@ -32,7 +32,7 @@ enum FitType {
 }
 
 #[allow(dead_code)]
-impl WordWrap {
+impl Softwrap {
   fn get_words(icu: &IcuEngines, rope_line: &str) -> Vec<(usize, ops::Range<usize>)> {
     let bounds: Vec<usize> = icu.word.segment_str(rope_line).collect();
     let mut cumsum_unicode_width = 0usize;

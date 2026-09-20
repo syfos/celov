@@ -3,7 +3,7 @@ use std::ops;
 use unicode_segmentation::UnicodeSegmentation;
 use unicode_width::UnicodeWidthStr;
 
-use crate::sycode::softwrap::word_wrap::WordWrap;
+use crate::sycode::softwrap::word_wrap::Softwrap;
 
 /// Contains grapheme aware break related data for the concerned grapheme of the concerned string.
 pub struct GraphemeData {
@@ -13,7 +13,7 @@ pub struct GraphemeData {
   byte_idx_range: std::ops::Range<usize>,
 }
 
-impl WordWrap {
+impl Softwrap {
   pub fn get_overflow_word_string(
     overflowed_line: &str,
     words: &[(usize, ops::Range<usize>)],
