@@ -1,5 +1,8 @@
 use crate::sycode::unicode::icu_engines::IcuEngines;
-use std::ops;
+use std::{
+  collections::BTreeMap,
+  ops::{self},
+};
 use unicode_width::UnicodeWidthStr;
 
 /// Rope lines of the viewport that have been wrapped for word aware visual display.
@@ -12,11 +15,15 @@ use unicode_width::UnicodeWidthStr;
 #[derive(Default)]
 #[allow(unused)]
 pub struct Softwrap {
-  pub line_idx: usize,
-  pub wrapped_slices: Vec<String>,
-  pub row_occupied_real_range: ops::Range<usize>,
-  // Key -> Line idx of rope line.
-  // Value -> [`WrappedRope`].
+  /// K: Line Index,
+  /// V: WrappesRope
+  pub map: BTreeMap<usize, WrappedRope>,
+}
+
+#[derive(Default)]
+pub struct WrappedRope {
+  pub slices: Vec<String>,
+  pub row_range: ops::Range<usize>,
 }
 
 enum FitType {
@@ -47,6 +54,7 @@ impl Softwrap {
   }
 
   /// In `words: &[(usize, ops::Range<usize>)]` the first item is unicode_width and second is range of the word in byte idx.
+  /// Note::Returns `FitType::Empty` for genuine empty string.
   fn get_nearmost_to(words: &[(usize, ops::Range<usize>)], viewport_width: usize) -> FitType {
     // A rope string can be empty so clealry return early.
     if words.is_empty() {
@@ -92,7 +100,13 @@ impl Softwrap {
   }
 
   /// Note: You have to put the words vector from outside as this function does loops repeatedly unless the line is fully wrapped.
-  pub fn wrap(&mut self, icu: &IcuEngines, rope_line: &str, viewport_width: usize) {
+  pub fn wrap(
+    &mut self,
+    icu: &IcuEngines,
+    rope_line: &str,
+    viewport_width: usize,
+    wrappings: &mut WrappedRope,
+  ) {
     // Generate internally.
     let words = &Self::get_words(icu, rope_line);
     // The byte idx to break line at.
@@ -102,7 +116,7 @@ impl Softwrap {
       FitType::Empty | FitType::Whole => {
         // The word vector is generated per iteration.
         // Hence, Every line is unique.
-        self.wrapped_slices.push(rope_line.into())
+        wrappings.slices.push(rope_line.into());
       }
 
       // Fact: The overflowed string can never be empty.
@@ -113,26 +127,26 @@ impl Softwrap {
 
         let wrapped_line = Self::wrap_grapheme_level(&overflow_word, viewport_width);
 
-        self.wrapped_slices.extend(wrapped_line);
+        wrappings.slices.extend(wrapped_line);
 
         if !reaminder.is_empty() {
-          self.wrap(icu, reaminder, viewport_width);
+          self.wrap(icu, reaminder, viewport_width, wrappings);
         }
       }
 
       FitType::Slice(_word_idx, byte_idx) => {
         let slice = &rope_line[..byte_idx];
-        self.wrapped_slices.push(slice.into());
+        wrappings.slices.push(slice.into());
         let remainder = &rope_line[byte_idx..];
 
         if remainder.width() <= viewport_width {
-          self.wrapped_slices.push(remainder.into());
+          wrappings.slices.push(remainder.into());
           return;
         }
 
         // Else break further
         // Note: It automatically stores the value hence no need to worry about unused code.
-        self.wrap(icu, remainder, viewport_width);
+        self.wrap(icu, remainder, viewport_width, wrappings);
       }
     }
   }
