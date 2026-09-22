@@ -18,7 +18,7 @@ impl Softwrap {
     overflowed_line: &str,
     words: &[(usize, ops::Range<usize>)],
   ) -> String {
-    let overflowed_word_end = words.get(0).unwrap().1.end;
+    let overflowed_word_end = words.first().unwrap().1.end;
     overflowed_line[..overflowed_word_end].to_string()
   }
   /// Returns [`GraphemeData`] conatining byte index boundary and cumulative width of each grapheme.
@@ -43,7 +43,7 @@ impl Softwrap {
       });
     }
 
-    return grapheme_data;
+    grapheme_data
   }
 
   /// Returns the nearmost byte index for the line string that fits well into the row of given viewport's width.
