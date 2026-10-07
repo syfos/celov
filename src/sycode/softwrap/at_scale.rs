@@ -10,7 +10,7 @@ use crate::sycode::{
 #[allow(dead_code)]
 impl Softwrap {
   /// Converts viewport's unwrapped lines into wrapped lines.
-  fn into_wrapped(
+  fn wrap_viewport_lines(
     &mut self,
     rope: &mut Rope,
     rope_line_indices: ops::RangeInclusive<usize>,
