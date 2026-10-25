@@ -16,18 +16,32 @@ impl Editor {
     terminal: &mut DefaultTerminal,
   ) -> std::result::Result<(), Box<dyn Error>> {
     loop {
-      let mut render_result = Ok(());
+      // To catch Err in the closure
+      let mut catch_error = Ok(());
 
+      // The main rendering function for Celov.
       terminal.draw(|frame| {
+        // Get frames height and width.
         let area = frame.area();
+
+        // Save for project wide access.
         self.viewport_height = area.height as usize;
         self.viewport_width = area.width as usize;
+
+        // Render Splits.
         self.splits.render(frame);
-        render_result = self.render_rope(frame, area);
+
+        // Render the current buffer.
+        // Note: terminal.draw() don't allows to return anything except ()
+        catch_error = self.render_rope(frame, area);
       })?;
 
-      render_result?;
+      // Open the error here.
+      // Note: If Err then loop will break.
+      catch_error?;
 
+      // If break signal via keys then -> Break.
+      // Executes specific task via keys.
       if self.enable_modal_keymaps()? {
         break Ok(());
       }
