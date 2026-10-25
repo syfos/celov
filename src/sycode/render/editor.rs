@@ -1,16 +1,15 @@
 use ratatui::DefaultTerminal;
 use std::{error::Error, result::Result};
-
 use crate::sycode::core::Editor;
 
 impl Editor {
-  /// Wrapper over [`ratatui::run`].
+  /// Result returning wrapper around [`ratatui::run`]. Purely cosmetic.
   pub fn run(&mut self) -> Result<(), Box<dyn Error>> {
     ratatui::run(|terminal| self.renderer(terminal))?;
     Ok(())
   }
 
-  /// Main renderer that renders Fgit's whole Tui.
+  // Renders the Editor and its components like Fgit, Shell and other visual features using ratatui.
   pub fn renderer(
     &mut self,
     terminal: &mut DefaultTerminal,
