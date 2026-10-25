@@ -33,7 +33,7 @@ impl Editor {
 
         // Render the current buffer.
         // Note: terminal.draw() don't allows to return anything except ()
-        catch_error = self.render_rope(frame, area);
+        catch_error = self.render_rope(frame);
       })?;
 
       // Open the error here.

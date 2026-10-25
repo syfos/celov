@@ -10,8 +10,8 @@ impl Editor {
   pub fn render_rope(
     &mut self,
     frame: &mut Frame,
-    area: Rect,
   ) -> Result<(), Box<dyn std::error::Error>> {
+    let area = frame.area();
     let net_lines = self.rope.len_lines();
     let start_line = self.scroll_offset;
     let end_line = (start_line + area.height as usize).min(net_lines);
