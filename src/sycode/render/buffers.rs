@@ -1,16 +1,12 @@
 use crate::sycode::core::Editor;
 use ratatui::{
   Frame,
-  layout::Rect,
   text::{Line, Text},
   widgets::Paragraph,
 };
 
 impl Editor {
-  pub fn render_rope(
-    &mut self,
-    frame: &mut Frame,
-  ) -> Result<(), Box<dyn std::error::Error>> {
+  pub fn render_rope(&mut self, frame: &mut Frame) -> Result<(), Box<dyn std::error::Error>> {
     let area = frame.area();
     let net_lines = self.rope.len_lines();
     let start_line = self.scroll_offset;

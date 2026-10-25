@@ -16,6 +16,7 @@ pub enum LineBreakChar {
   None,
 }
 
+#[allow(dead_code)]
 impl Editor {
   /// Matches the last most line break unicode character and returns one of variant of [`LineBreakChar`].
   fn detect_trailing_linebreak_char(rope_line: &str) -> LineBreakChar {
