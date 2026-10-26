@@ -100,7 +100,11 @@ impl Softwrap {
     FitType::Slice(word_idx, break_at)
   }
 
-  /// Note: You have to put the words vector from outside as this function does loops repeatedly unless the line is fully wrapped.
+  /// Wraps the given `rope` line at `word` level if there is any valid `word breakpoint` such that the string slice from start to that point fits into the viewport width. 
+  ///
+  /// If there is no such valid breakpoint or the breakpoint is overflowing then this function will call grapheme aware break.
+  ///
+  /// For the overflowing case, grapheme aware break will only be implemented to the point where the string fits into the viewport width. Thereafter, the rest will go through the same cycle of word wrap and grapheme wrap till complete exhaustion.
   pub fn wrap(
     &mut self,
     icu: &IcuEngines,
@@ -108,8 +112,10 @@ impl Softwrap {
     viewport_width: usize,
     wrappings: &mut RopeSlices,
   ) {
-    // Generate internally.
+    // Generate the words vector internally.
+    // This avoids certain bugs that I've forgot.
     let words = &Self::get_words(icu, rope_line);
+
     // The byte idx to break line at.
     let fit_type = Self::get_nearmost_to(words, viewport_width);
 
