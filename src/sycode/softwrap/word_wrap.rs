@@ -40,6 +40,7 @@ enum FitType {
 
 #[allow(dead_code)]
 impl Softwrap {
+  /// Generates the valid unicode ware words for the given rope string using `ICU4x`'s [`WordSegmenterBorrowed<'static>`]
   fn get_words(icu: &IcuEngines, rope_line: &str) -> Vec<(usize, ops::Range<usize>)> {
     let bounds: Vec<usize> = icu.word.segment_str(rope_line).collect();
     let mut cumsum_unicode_width = 0usize;
