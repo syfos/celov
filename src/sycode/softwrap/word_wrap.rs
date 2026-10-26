@@ -21,6 +21,7 @@ pub struct RopeSlices {
   pub row_range: ops::Range<usize>,
 }
 
+/// Each element says something about the rope's width as per its name.
 enum FitType {
   /// Only a slice of string can fit in the given viewport width.
   Slice(usize, usize),
