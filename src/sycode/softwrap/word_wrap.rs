@@ -23,14 +23,18 @@ pub struct RopeSlices {
 
 /// Each element says something about the rope's width as per its name.
 enum FitType {
-  /// Only a slice of string can fit in the given viewport width.
+  /// Only a slice/chunk of the concerned rope fits for the given viewport width.
   Slice(usize, usize),
+
   /// The whole string fits in the given viewport width.
-  Whole,
+  Fit,
+
   /// No word of string fits for the viewport width.
   /// Do grapheme aware break.
   Overflow,
+
   /// Words vector is empty.
+  /// Each empty rope == 1 visual line.
   Empty,
 }
 
@@ -66,7 +70,7 @@ impl Softwrap {
     if word_idx == 1 {
       // 1. There is only 1 word in words vector and it fits inside row.
       if words.len() == 1 {
-        return FitType::Whole;
+        return FitType::Fit;
       }
 
       // 2. There can be many words and only the 1st word fits into row.
@@ -88,7 +92,7 @@ impl Softwrap {
 
     // If element idx is last then the string fits well.
     if word_idx == words.len().saturating_sub(1) {
-      return FitType::Whole;
+      return FitType::Fit;
     }
     let break_at = words.get(word_idx).unwrap().1.end;
 
@@ -109,7 +113,7 @@ impl Softwrap {
     let fit_type = Self::get_nearmost_to(words, viewport_width);
 
     match fit_type {
-      FitType::Empty | FitType::Whole => {
+      FitType::Empty | FitType::Fit => {
         // The word vector is generated per iteration.
         // Hence, Every line is unique.
         wrappings.slices.push(rope_line.into());
