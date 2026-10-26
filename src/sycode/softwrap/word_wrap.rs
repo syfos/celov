@@ -56,7 +56,7 @@ impl Softwrap {
 
   /// In `words: &[(usize, ops::Range<usize>)]` the first item is unicode_width and second is range of the word in byte idx.
   /// Note::Returns `FitType::Empty` for genuine empty string.
-  fn get_nearmost_to(words: &[(usize, ops::Range<usize>)], viewport_width: usize) -> FitType {
+  fn get_fit_type(words: &[(usize, ops::Range<usize>)], viewport_width: usize) -> FitType {
     // A rope string can be empty so clealry return early.
     if words.is_empty() {
       return FitType::Empty;
@@ -117,7 +117,7 @@ impl Softwrap {
     let words = &Self::get_words(icu, rope_line);
 
     // The byte idx to break line at.
-    let fit_type = Self::get_nearmost_to(words, viewport_width);
+    let fit_type = Self::get_fit_type(words, viewport_width);
 
     match fit_type {
       FitType::Empty | FitType::Fit => {
