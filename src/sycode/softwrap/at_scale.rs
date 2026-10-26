@@ -3,7 +3,7 @@ use std::ops;
 use ropey::Rope;
 
 use crate::sycode::{
-  softwrap::word_wrap::{Softwrap, WrappedRope},
+  softwrap::word_wrap::{Softwrap, RopeSlices},
   unicode::icu_engines::IcuEngines,
 };
 
@@ -27,7 +27,7 @@ impl Softwrap {
       // Each rope contains its:
       // 1. Wrapped slices
       // 2. Row range to locate on viewport
-      let mut wrappings = WrappedRope::default();
+      let mut wrappings = RopeSlices::default();
 
       // This mutates the "wrappings" struct.
       self.wrap(icu, &rope_string, viewport_width, &mut wrappings);
@@ -42,7 +42,7 @@ impl Softwrap {
       start = end;
 
       // Push the "wrappings" along its line index into a bTreeMap resembling the viewport.
-      self.map.insert(line_idx, wrappings);
+      self.display_lines.insert(line_idx, wrappings);
     }
   }
 }

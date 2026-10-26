@@ -1,4 +1,4 @@
-use celov::sycode::{core::Editor, softwrap::word_wrap::WrappedRope};
+use celov::sycode::{core::Editor, softwrap::word_wrap::RopeSlices};
 use unicode_width::UnicodeWidthStr;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -17,7 +17,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
   let breakpoints: Vec<usize> = editor.icu.word.segment_str(s).collect();
 
-  let mut wrappings = WrappedRope::default();
+  let mut wrappings = RopeSlices::default();
   editor.softwrap.wrap(&editor.icu, s, 40, &mut wrappings);
   for slice in wrappings.slices.iter() {
     println!("{}", slice.width());

@@ -5,23 +5,18 @@ use std::{
 };
 use unicode_width::UnicodeWidthStr;
 
-/// Rope lines of the viewport that have been wrapped for word aware visual display.
-/// Note: Some wrapped slices of the [`WrappedRope`] may contain grapheme cluster aware break instead of word break.
-/// If there would have been no valid word of width less than or equal to viewport width.
-///   
-/// Info:
-/// 1. The word aware wrap is scripto continua and scripto distincta.
-/// 2. The Grapheme aware wrap is just grapheme cluster aware.
+/// The ultimate module concerned with soft-wrapping of rope lines for the given document.
 #[derive(Default)]
 #[allow(unused)]
 pub struct Softwrap {
-  /// K: Line Index,
-  /// V: WrappesRope
-  pub map: BTreeMap<usize, WrappedRope>,
+  pub display_lines: BTreeMap<usize, RopeSlices>,
 }
 
+/// Contains the wrapped slices of rope line. 
+/// Each slice's width >= viewport's width.
+/// Therefore, each slice == 1 visual row.
 #[derive(Default)]
-pub struct WrappedRope {
+pub struct RopeSlices {
   pub slices: Vec<String>,
   pub row_range: ops::Range<usize>,
 }
@@ -105,7 +100,7 @@ impl Softwrap {
     icu: &IcuEngines,
     rope_line: &str,
     viewport_width: usize,
-    wrappings: &mut WrappedRope,
+    wrappings: &mut RopeSlices,
   ) {
     // Generate internally.
     let words = &Self::get_words(icu, rope_line);
