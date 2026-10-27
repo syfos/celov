@@ -1,7 +1,4 @@
-use std::ops;
-
 use ropey::Rope;
-
 use crate::sycode::{
   softwrap::word_wrap::{Softwrap, RopeSlices},
   unicode::icu_engines::IcuEngines,

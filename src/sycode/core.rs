@@ -10,6 +10,7 @@ use crate::sycode::splits::Splits;
 use crate::sycode::unicode::icu_engines::IcuEngines;
 
 #[derive(Default)]
+#[allow(dead_code)]
 pub struct Editor {
   pub scroll_offset: usize,
   pub rope: Rope,

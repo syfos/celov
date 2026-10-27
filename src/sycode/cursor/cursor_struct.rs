@@ -1,6 +1,7 @@
 /// Cordinates of native cursor.
 /// Note: Ratatui accepts cordinates in `(col, row)` format instead of `(row, col)`.
 #[derive(Default, Clone, Copy)]
+#[allow(dead_code)]
 pub struct Cursor {
   /// Postition of cursor in column.
   pub col_pos: usize,

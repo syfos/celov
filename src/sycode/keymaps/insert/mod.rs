@@ -34,7 +34,7 @@ impl Editor {
           return Ok(false);
         }
 
-        KeyCode::Char(char) => {
+        KeyCode::Char(_char) => {
           // self.insert_char(char);
         }
 
