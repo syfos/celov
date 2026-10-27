@@ -13,15 +13,17 @@ impl Softwrap {
   pub fn wrap_viewport_lines(
     &mut self,
     rope: &mut Rope,
-    rope_line_indices: ops::RangeInclusive<usize>,
+    seed_line_idx: &mut usize,
     icu: &IcuEngines,
     viewport_width: usize,
+    viewport_height: usize,
   ) {
     let mut start = 0;
+    let mut last_row = 0;
 
-    for line_idx in rope_line_indices {
+    while last_row <= viewport_height  && *seed_line_idx <= rope.len_lines().saturating_sub(1){
       // Get rope string
-      let rope_string = rope.line(line_idx).to_string();
+      let rope_string = rope.line(*seed_line_idx).to_string();
 
       // We generate WrappesRope each time because
       // Each rope contains its:
@@ -39,10 +41,13 @@ impl Softwrap {
       // start = 3, end = 5 => 3..8 -> 3, 4, 5, 6, 7
       let end = start + wrappings.slices.len();
       wrappings.row_range = start..end;
+      last_row = end;
       start = end;
 
       // Push the "wrappings" along its line index into a bTreeMap resembling the viewport.
-      self.display_lines.insert(line_idx, wrappings);
+      self.display_lines.insert(*seed_line_idx, wrappings);
+
+      *seed_line_idx += 1;
     }
   }
 }
