@@ -1,6 +1,6 @@
+use crate::sycode::core::Editor;
 use ratatui::DefaultTerminal;
 use std::{error::Error, result::Result};
-use crate::sycode::core::Editor;
 
 impl Editor {
   /// Result returning wrapper around [`ratatui::run`]. Purely cosmetic.

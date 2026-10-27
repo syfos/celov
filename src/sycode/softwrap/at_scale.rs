@@ -1,8 +1,8 @@
-use ropey::Rope;
 use crate::sycode::{
-  softwrap::word_wrap::{Softwrap, RopeSlices},
+  softwrap::word_wrap::{RopeSlices, Softwrap},
   unicode::icu_engines::IcuEngines,
 };
+use ropey::Rope;
 
 #[allow(dead_code)]
 impl Softwrap {
@@ -18,7 +18,7 @@ impl Softwrap {
     let mut start = 0;
     let mut last_row = 0;
 
-    while last_row <= viewport_height  && *seed_line_idx <= rope.len_lines().saturating_sub(1){
+    while last_row <= viewport_height && *seed_line_idx <= rope.len_lines().saturating_sub(1) {
       // Get rope string
       let rope_string = rope.line(*seed_line_idx).to_string();
 

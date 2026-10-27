@@ -12,7 +12,7 @@ pub struct Softwrap {
   pub display_lines: BTreeMap<usize, RopeSlices>,
 }
 
-/// Contains the wrapped slices of rope line. 
+/// Contains the wrapped slices of rope line.
 /// Each slice's width >= viewport's width.
 /// Therefore, each slice == 1 visual row.
 #[derive(Default)]
@@ -100,7 +100,7 @@ impl Softwrap {
     FitType::Slice(word_idx, break_at)
   }
 
-  /// Wraps the given `rope` line at `word` level if there is any valid `word breakpoint` such that the string slice from start to that point fits into the viewport width. 
+  /// Wraps the given `rope` line at `word` level if there is any valid `word breakpoint` such that the string slice from start to that point fits into the viewport width.
   ///
   /// If there is no such valid breakpoint or the breakpoint is overflowing then this function will call grapheme aware break.
   ///
