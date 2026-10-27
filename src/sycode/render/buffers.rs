@@ -9,17 +9,24 @@ impl Editor {
   pub fn display_rope(&mut self, frame: &mut Frame) -> Result<(), Box<dyn std::error::Error>> {
     self.softwrap.wrap_viewport_lines(
       &mut self.rope,
-      0usize..=1usize,
+      &mut 0,
       &self.icu,
       self.viewport_width,
+      self.viewport_height,
     );
 
     let mut lines: Vec<ratatui::text::Line> = Vec::new();
     for (_k, v) in self.softwrap.display_lines.iter() {
       for slice in v.slices.iter() {
-        let escaped_trailing_char = Self::escape_hidden_chars(slice);
-        let bidi_line = Unicode::into_bidirectional_line(&escaped_trailing_char).reordered_line;
-        lines.push(Line::raw(bidi_line));
+        let debugger_slice = Self::escape_hidden_chars(slice);
+
+        // into_bidrectional_line() can have an internal panic for empty string.
+        if !debugger_slice.is_empty() {
+          let bidi_line = Unicode::into_bidirectional_line(&debugger_slice).reordered_line;
+          lines.push(Line::raw(bidi_line));
+        } else {
+          lines.push(Line::raw(debugger_slice));
+        }
       }
     }
     let paragraph = Paragraph::new(Text::from(lines));
