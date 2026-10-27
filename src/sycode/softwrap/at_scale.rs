@@ -18,6 +18,8 @@ impl Softwrap {
     let mut start = 0;
     let mut last_row = 0;
 
+    // Note: This guard prevents the Softwrap from wrapping more than whatbis needed for viewport.
+    // The while loop guard must not be compromised.
     while last_row <= viewport_height && *seed_line_idx <= rope.len_lines().saturating_sub(1) {
       // Get rope string
       let rope_string = rope.line(*seed_line_idx).to_string();
@@ -44,6 +46,7 @@ impl Softwrap {
       // Push the "wrappings" along its line index into a bTreeMap resembling the viewport.
       self.display_lines.insert(*seed_line_idx, wrappings);
 
+      // mutate line idx
       *seed_line_idx += 1;
     }
   }
