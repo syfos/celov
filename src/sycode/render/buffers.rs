@@ -1,4 +1,4 @@
-use crate::sycode::core::Editor;
+use crate::sycode::{core::Editor, unicode::unicode_struct::Unicode};
 use ratatui::{
   Frame,
   text::{Line, Text},
@@ -6,27 +6,27 @@ use ratatui::{
 };
 
 impl Editor {
-  pub fn render_rope(&mut self, frame: &mut Frame) -> Result<(), Box<dyn std::error::Error>> {
-    let area = frame.area();
-    let net_lines = self.rope.len_lines();
-    let start_line = self.scroll_offset;
-    let end_line = (start_line + area.height as usize).min(net_lines);
+  pub fn display_rope(&mut self, frame: &mut Frame) -> Result<(), Box<dyn std::error::Error>> {
+    self.softwrap.wrap_viewport_lines(
+      &mut self.rope,
+      0usize..=1usize,
+      &self.icu,
+      self.viewport_width,
+    );
 
-    let lines: Vec<ratatui::text::Line> = (start_line..end_line)
-      .map(|i| {
-        let rope_slice = self.rope.line(i).to_string();
-        let escaped = Self::escape_hidden_chars(&rope_slice);
-        Line::raw(escaped)
-      })
-      .collect();
-
+    let mut lines: Vec<ratatui::text::Line> = Vec::new();
+    for (_k, v) in self.softwrap.display_lines.iter() {
+      for slice in v.slices.iter() {
+        let escaped_trailing_char = Self::escape_hidden_chars(slice);
+        let bidi_line = Unicode::into_bidirectional_line(&escaped_trailing_char).reordered_line;
+        lines.push(Line::raw(bidi_line));
+      }
+    }
     let paragraph = Paragraph::new(Text::from(lines));
-    frame.render_widget(paragraph, area);
-
+    frame.render_widget(paragraph, frame.area());
     self.cursor.render(&self.mode, frame, false)?;
     Ok(())
   }
-
   fn escape_hidden_chars(s: &str) -> String {
     let mut out = String::with_capacity(s.len());
     for c in s.chars() {
