@@ -7,7 +7,7 @@ use ratatui::{
 
 impl Editor {
   pub fn display_rope(&mut self, frame: &mut Frame) -> Result<(), Box<dyn std::error::Error>> {
-    self.softwrap.wrap_viewport_lines(
+    self.softwrap.wrap_lines_for_viewport(
       &mut self.rope,
       &mut 0,
       &self.icu,

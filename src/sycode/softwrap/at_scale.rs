@@ -7,7 +7,7 @@ use ropey::Rope;
 #[allow(dead_code)]
 impl Softwrap {
   /// Converts viewport's unwrapped lines into wrapped lines.
-  pub fn wrap_viewport_lines(
+  pub fn wrap_lines_for_viewport(
     &mut self,
     rope: &mut Rope,
     seed_line_idx: &mut usize,
