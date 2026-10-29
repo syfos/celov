@@ -2,7 +2,6 @@ pub mod core;
 pub mod cursor;
 pub mod edit;
 pub mod keymaps;
-pub mod motions;
 pub mod render;
 pub mod scroll;
 pub mod softwrap;
