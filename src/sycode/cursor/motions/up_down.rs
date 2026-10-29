@@ -15,14 +15,18 @@ pub struct TargetRowInfo {
 impl Cursor {
   /// Moves the cursor up by the desired rows.
   /// Intentionally clamped at row 0.
-  fn move_up_in_rows_by(&mut self, rows: usize) {
-    self.row_pos = self.row_pos.saturating_sub(rows);
+  fn move_up_in_rows_by(&mut self, softwrap: &Softwrap, target: usize, viewport_height: usize) {
+    self.row_pos = self.row_pos.saturating_sub(target);
+    let target_data = self.get_target_data(softwrap, target, viewport_height);
+    self.adjust_col_pos(target_data);
   }
 
   /// Moves the cursor down by the desired rows.
   /// Intentionally clamped to the max height of viewport.
-  fn move_down_in_rows_by(&mut self, rows: usize, viewport_height: usize) {
-    self.col_pos = self.col_pos.saturating_add(rows).min(viewport_height);
+  fn move_down_in_rows_by(&mut self, softwrap: &Softwrap, target: usize, viewport_height: usize) {
+    self.col_pos = self.col_pos.saturating_add(target).min(viewport_height);
+    let target_data = self.get_target_data(softwrap, target, viewport_height);
+    self.adjust_col_pos(target_data);
   }
 
   /// Get the target row's rope line index along stribg data where the cursor has to land.
