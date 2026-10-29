@@ -1,3 +1,5 @@
+use unicode_width::UnicodeWidthStr;
+
 use crate::sycode::{cursor::cursor_struct::Cursor, softwrap::word_wrap::Softwrap};
 
 /// Contains information about the row at which our cursor would land. Helps to smartly prevent the cursor from landing outside the coulumn width of the target row.
@@ -23,6 +25,7 @@ impl Cursor {
     self.col_pos = self.col_pos.saturating_add(rows).min(viewport_height);
   }
 
+  /// Get the target row's rope line index along stribg data where the cursor has to land.
   fn get_target_data(
     &mut self,
     softwrap: &Softwrap,
@@ -53,11 +56,11 @@ impl Cursor {
         continue;
       }
 
-      // For the end that is equal or less than the target: 
-      
+      // For the end that is equal or less than the target:
+
       // Given the same example as above we can say:
       // (target - start) + 1 gives the length count under which the slice is standing in the slices vector.
-      // 
+      //
       // (6 - 4) + 1 = 2 + 1 = 3, so => 4, 5, 6
       //
       // So for this key value pair the slices vector at length 3 where the row count becomes 6 is where our string is.
@@ -74,5 +77,13 @@ impl Cursor {
     }
 
     target_info
+  }
+
+  /// Adjust the col position of cursor if after up/down move it lands on any col > row's col
+  fn adjust_col_pos(&mut self, target_info: TargetRowInfo) {
+    let string_width = target_info.string.width();
+    if self.col_pos.gt(&string_width) {
+      self.col_pos = string_width;
+    }
   }
 }
