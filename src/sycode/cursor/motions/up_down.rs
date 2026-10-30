@@ -81,7 +81,8 @@ impl Cursor {
       target_info = TargetRowInfo {
         line_idx: *idx,
         string: slice.clone(),
-      }
+      };
+      break;
     }
 
     target_info
