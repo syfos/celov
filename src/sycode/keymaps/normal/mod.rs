@@ -68,11 +68,13 @@ impl Editor {
         // Movement Controls
         KeyCode::Char('k') | KeyCode::Up => {
           // self.decrement_cursor_row(1);
+          self.cursor.move_up_in_rows_by(&self.softwrap, 1, self.viewport_height);
           return Ok(false);
         }
 
         KeyCode::Char('j') | KeyCode::Down => {
           // self.increment_cursor_row(1);
+          self.cursor.move_down_in_rows_by(&self.softwrap, 1, self.viewport_height);
           return Ok(false);
         }
 
