@@ -15,7 +15,7 @@ pub struct TargetRowInfo {
 impl Cursor {
   /// Moves the cursor up by the desired rows.
   /// Intentionally clamped at row 0.
-  fn move_up_in_rows_by(&mut self, softwrap: &Softwrap, target: usize, viewport_height: usize) {
+  pub fn move_up_in_rows_by(&mut self, softwrap: &Softwrap, target: usize, viewport_height: usize) {
     self.row_pos = self.row_pos.saturating_sub(target);
     let target_data = self.get_target_data(softwrap, target, viewport_height);
     self.adjust_col_pos(target_data);
@@ -23,8 +23,13 @@ impl Cursor {
 
   /// Moves the cursor down by the desired rows.
   /// Intentionally clamped to the max height of viewport.
-  fn move_down_in_rows_by(&mut self, softwrap: &Softwrap, target: usize, viewport_height: usize) {
-    self.col_pos = self.col_pos.saturating_add(target).min(viewport_height);
+  pub fn move_down_in_rows_by(
+    &mut self,
+    softwrap: &Softwrap,
+    target: usize,
+    viewport_height: usize,
+  ) {
+    self.row_pos = self.row_pos.saturating_add(target).min(viewport_height);
     let target_data = self.get_target_data(softwrap, target, viewport_height);
     self.adjust_col_pos(target_data);
   }
@@ -59,7 +64,6 @@ impl Cursor {
       if target > data.row_range.end.saturating_sub(1) {
         continue;
       }
-
       // For the end that is equal or less than the target:
 
       // Given the same example as above we can say:
