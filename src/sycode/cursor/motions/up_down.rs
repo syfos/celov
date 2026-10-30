@@ -35,7 +35,7 @@ impl Cursor {
   }
 
   /// Get the target row's rope line index along stribg data where the cursor has to land.
-  fn get_target_data(
+  pub fn get_target_data(
     &mut self,
     softwrap: &Softwrap,
     target: usize,
