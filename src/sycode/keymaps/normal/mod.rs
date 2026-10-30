@@ -86,6 +86,7 @@ impl Editor {
 
         KeyCode::Char('l') | KeyCode::Right => {
           // self.increment_cursor_col(1);
+        self.cursor.move_right(&self.softwrap, 1, self.viewport_height);
           return Ok(false);
         }
 
