@@ -91,8 +91,8 @@ impl Cursor {
   /// Adjust the col position of cursor if after up/down move it lands on any col > row's col
   fn adjust_col_pos(&mut self, target_info: TargetRowInfo) {
     let string_width = target_info.string.width();
-    if self.col_pos.gt(&string_width) {
-      self.col_pos = string_width;
+    if self.col_pos.ge(&string_width) {
+      self.col_pos = string_width.saturating_sub(1);
     }
   }
 }
