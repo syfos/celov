@@ -36,14 +36,15 @@ impl Editor {
       })?;
       catch_error?;
 
-          let max_text_row = self.softwrap
-      .display_lines
-      .last_key_value()
-      .map(|(_, v)| v.row_range.end)
-      .unwrap();
+      let max_text_row = self
+        .softwrap
+        .display_lines
+        .last_key_value()
+        .map(|(_, v)| v.row_range.end)
+        .unwrap();
 
-    // mutate row position and clamp max at max row.
-    self.cursor.row_pos = self.cursor.row_pos.min(max_text_row.saturating_sub(2));
+      // mutate row position and clamp max at max row.
+      self.cursor.row_pos = self.cursor.row_pos.min(max_text_row.saturating_sub(2));
 
       // Open the error here.
       // Note: If Err then loop will break.

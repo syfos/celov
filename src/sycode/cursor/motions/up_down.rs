@@ -29,7 +29,7 @@ impl Cursor {
     target: usize,
     viewport_height: usize,
   ) {
-   // Get the last most row number of wrapped lines.
+    // Get the last most row number of wrapped lines.
     let max_text_row = softwrap
       .display_lines
       .last_key_value()
@@ -37,7 +37,10 @@ impl Cursor {
       .unwrap();
 
     // mutate row position and clamp max at max row.
-    self.row_pos = self.row_pos.saturating_add(target).min(max_text_row.saturating_sub(2));
+    self.row_pos = self
+      .row_pos
+      .saturating_add(target)
+      .min(max_text_row.saturating_sub(2));
     let current_data = self.get_target_data(softwrap, self.row_pos, viewport_height);
     self.adjust_col_pos(current_data);
   }
