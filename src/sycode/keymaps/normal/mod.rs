@@ -80,7 +80,7 @@ impl Editor {
 
         KeyCode::Char('h') | KeyCode::Left => {
           // self.decrement_cursor_col(1);
-        self.cursor.move_left(&self.softwrap, 1, self.viewport_height);
+        self.cursor.move_left(1);
           return Ok(false);
         }
 
