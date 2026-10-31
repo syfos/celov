@@ -34,10 +34,19 @@ impl Editor {
         // Note: terminal.draw() don't allows to return anything except ()
         catch_error = self.display_rope(frame);
       })?;
+      catch_error?;
+
+          let max_text_row = self.softwrap
+      .display_lines
+      .last_key_value()
+      .map(|(_, v)| v.row_range.end)
+      .unwrap();
+
+    // mutate row position and clamp max at max row.
+    self.cursor.row_pos = self.cursor.row_pos.min(max_text_row.saturating_sub(2));
 
       // Open the error here.
       // Note: If Err then loop will break.
-      catch_error?;
 
       // If break signal via keys then -> Break.
       // Executes specific task via keys.
