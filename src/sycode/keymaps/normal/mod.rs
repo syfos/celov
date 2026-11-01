@@ -1,107 +1,75 @@
 use crate::sycode::{core::Editor, keymaps::modal::ModeType};
-use crossterm::event::{Event, KeyCode, KeyModifiers};
-use std::time::Duration;
+use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
+use std::{io, time::Duration};
 
-// True means break
-// False means continue the loop
-#[allow(dead_code)]
-#[allow(clippy::collapsible_if)]
+const SEQ_TIMEOUT: Duration = Duration::from_millis(500);
+
 impl Editor {
-  pub fn normal_mode_keymaps(&mut self) -> std::io::Result<bool> {
-    if !crossterm::event::poll(Duration::from_millis(50))? {
-      // false means work-done/ending
-      return Ok(false);
+  pub fn normal_mode_keymaps(&mut self, key: KeyEvent) -> io::Result<()> {
+    if self.accumulate_count(key) {
+      return Ok(());
+    }
+    let n = self.take_count();
+
+    if self.move_cursor(key, n) {
+      return Ok(());
     }
 
-    if let Event::Key(key) = crossterm::event::read()? {
-      match key.code {
-        KeyCode::Char('q') if key.modifiers == KeyModifiers::CONTROL => {
-          // true means break the loop
-          return Ok(true);
-        }
+    let ctrl = key.modifiers.contains(KeyModifiers::CONTROL);
 
-        KeyCode::Char('i') => {
-          self.mode = ModeType::Insert;
-          return Ok(false);
-        }
+    match key.code {
+      KeyCode::Esc => {} // count already cleared
 
-        KeyCode::Char('w') if key.modifiers == KeyModifiers::CONTROL => {
-          if crossterm::event::poll(Duration::from_millis(500))? {
-            if let Event::Key(next) = crossterm::event::read()? {
-              match next.code {
-                // For vim users Vertical is Horizontal.
-                KeyCode::Char('v') => {
-                  // self.splits.horizontal.increment_count();
-                  return Ok(false);
-                }
-                KeyCode::Char('h') => {
-                  // self.splits.vertical.increment_count();
-                  return Ok(false);
-                }
-                _ => {}
-              }
-            }
-          }
-        }
-
-        // Todo: Scope split feature to Editor.
-        KeyCode::Char('d') if key.modifiers == KeyModifiers::CONTROL => {
-          if crossterm::event::poll(Duration::from_millis(500))? {
-            if let Event::Key(next) = crossterm::event::read()? {
-              match next.code {
-                KeyCode::Char('h') => {
-                  // self.splits.vertical.decrement_count();
-                  // self.splits.vertical.del_split();
-                  return Ok(false);
-                }
-                KeyCode::Char('v') => {
-                  // self.splits.horizontal.decrement_count();
-                  // self.splits.horizontal.del_split();
-                  return Ok(false);
-                }
-                _ => {}
-              }
-            }
-          }
-        }
-
-        // Movement Controls
-        KeyCode::Char('k') | KeyCode::Up => {
-          // self.decrement_cursor_row(1);
-          self
-            .cursor
-            .move_up_in_rows_by(&self.softwrap, 1, self.viewport_height);
-          return Ok(false);
-        }
-
-        KeyCode::Char('j') | KeyCode::Down => {
-          // self.increment_cursor_row(1);
-          self
-            .cursor
-            .move_down_in_rows_by(&self.softwrap, 1, self.viewport_height);
-          return Ok(false);
-        }
-
-        KeyCode::Char('h') | KeyCode::Left => {
-          // self.decrement_cursor_col(1);
-          self.cursor.move_left(1);
-          return Ok(false);
-        }
-
-        KeyCode::Char('l') | KeyCode::Right => {
-          // self.increment_cursor_col(1);
-          self
-            .cursor
-            .move_right(&self.softwrap, 1, self.viewport_height);
-          return Ok(false);
-        }
-
-        _ => {}
+      // Mode switches
+      KeyCode::Char('i') if !ctrl => self.mode = ModeType::Insert,
+      KeyCode::Char('a') if !ctrl => {
+        self.cursor.move_right(&self.softwrap, 1, self.viewport_height);
+        self.mode = ModeType::Insert;
       }
+      KeyCode::Char('v') if !ctrl => self.mode = ModeType::Visual,
+      // TODO: 'I', 'A', 'o', 'O' once you have line-start/end/insert-line APIs.
+
+      // Splits (vim users: vertical is horizontal)
+      KeyCode::Char('w') if ctrl => {
+        if let Some(next) = self.next_key(SEQ_TIMEOUT)? {
+          match next.code {
+            KeyCode::Char('v') => { /* self.splits.horizontal.increment_count(); */ }
+            KeyCode::Char('h') => { /* self.splits.vertical.increment_count(); */ }
+            _ => {}
+          }
+        }
+      }
+      KeyCode::Char('d') if ctrl => {
+        if let Some(next) = self.next_key(SEQ_TIMEOUT)? {
+          match next.code {
+            KeyCode::Char('h') => { /* vertical decrement + del_split */ }
+            KeyCode::Char('v') => { /* horizontal decrement + del_split */ }
+            _ => {}
+          }
+        }
+      }
+
+      _ => {}
+    }
+    Ok(())
+  }
+
+  pub fn visual_mode_keymaps(&mut self, key: KeyEvent) -> io::Result<()> {
+    if self.accumulate_count(key) {
+      return Ok(());
+    }
+    let n = self.take_count();
+
+    if self.move_cursor(key, n) {
+      // TODO: extend selection from anchor to cursor here.
+      return Ok(());
     }
 
-    // This handles all unmatched cases.
-    // Reaching this means the loop must continue.
-    Ok(false)
+    match key.code {
+      KeyCode::Esc | KeyCode::Char('v') => self.mode = ModeType::Normal,
+      // TODO: 'd', 'y', 'c' acting on the selection.
+      _ => {}
+    }
+    Ok(())
   }
 }

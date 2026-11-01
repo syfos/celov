@@ -21,6 +21,7 @@ pub struct Editor {
   pub icu: IcuEngines,
   pub viewport_height: usize,
   pub viewport_width: usize,
+  pub count: usize,
 }
 
 #[allow(dead_code)]
@@ -58,6 +59,7 @@ impl Editor {
       viewport_width: 0,
       softwrap: Softwrap::default(),
       icu: IcuEngines::new(),
+      count: 0,
     })
   }
 }
